@@ -92,11 +92,19 @@ const authentication = (req: LoginRequest & { session:MySession}, res: Response)
 function getUrls(rol: string){
     const urls = [
         {
-            name: 'About',
+            name: 'Servicios',
             urls: [
                 {
-                    title: 'About',
-                    url: '/About'
+                    title: 'Inventario',
+                    url: '/inventario'
+                },
+                {
+                    title: 'Agendamiento',
+                    url: '/agendamiento'
+                },
+                {
+                    title: 'Atención Médica',
+                    url: '/atencionMedica'
                 }
             ]
         },
@@ -104,11 +112,19 @@ function getUrls(rol: string){
     
     const urlsAdmin = [
         {
-            name: 'About',
+            name: 'Servicios',
             urls: [
                 {
-                    title: 'About',
-                    url: '/About'
+                    title: 'Inventario',
+                    url: '/inventario'
+                },
+                {
+                    title: 'Agendamiento',
+                    url: '/agendamiento'
+                },
+                {
+                    title: 'Atención Médica',
+                    url: '/atencionMedica'
                 }
             ]
         },

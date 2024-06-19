@@ -92,6 +92,11 @@
       transform: translateY(0);
     }
   }
+
+  @keyframes fadeIn {
+    0% {opacity: 0;}
+    100% {opacity: 1;}
+  }
   
   .animate-fade-in-down {
     animation: fade-in-down 0.5s ease-out forwards;
@@ -120,4 +125,36 @@
 
   .animate-glow {
     animation: glow 2s ease-in-out infinite;
+  }
+
+  .cardanim {
+    opacity: 0;
+    animation-name: fade-in-down;
+    animation-duration: 1s;
+    animation-timing-function: ease-in-out;
+    animation-fill-mode: forwards;
+  }
+  
+  .cardanim:nth-child(1) {
+    animation-delay: 100ms;
+  }
+  
+  .cardanim:nth-child(2) {
+    animation-delay: 200ms;
+  }
+  
+  .cardanim:nth-child(3) {
+    animation-delay: 300ms;
+  }
+
+  .cardanim:nth-child(4) {
+    animation-delay: 400ms;
+  }
+
+  .cardanim:nth-child(5) {
+    animation-delay: 500ms;
+  }
+
+  .cardanim:nth-child(6) {
+    animation-delay: 600ms;
   }

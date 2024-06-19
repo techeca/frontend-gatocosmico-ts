@@ -6,6 +6,7 @@ import Negocio from "./pages/Admin/Negocio.tsx";
 import Usuarios from "./pages/Admin/Usuarios.tsx";
 import Home from "./pages/Home/HomePage.tsx";
 import NotFound from "./pages/NotFound/index.tsx";
+import Agendamiento from "./pages/Admin/Agendamiento.tsx";
 
 const routes = [
   {
@@ -27,6 +28,10 @@ const routes = [
           {
             path: 'usuarios',
             element: <Usuarios />
+          },
+          {
+            path: 'agendamiento',
+            element: <Agendamiento />
           }
         ]
       },

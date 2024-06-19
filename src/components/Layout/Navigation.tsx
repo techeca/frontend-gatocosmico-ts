@@ -123,7 +123,7 @@ import { toast } from "sonner"
       throw new Error('Component must be wrapped with <UserContext.Provider>');
     }
     const { user } = context;
-    
+
     return (
       <div className="sticky top-0 z-10 flex border-b-[1px] justify-center items-center p-2 px-6 backdrop-blur-md">
         <div>
@@ -136,7 +136,7 @@ import { toast } from "sonner"
         </div>
         </div>
         <NavigationMenu>
-          <NavigationMenuList >
+          <NavigationMenuList className="hidden sm:flex">
             {user && 
               <NavigationMenuItem>
                 <NavigationMenuTrigger>{user.urls[0].name}</NavigationMenuTrigger>
@@ -144,35 +144,30 @@ import { toast } from "sonner"
                   <ul className="grid gap-3 p-4 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
                     <li className="row-span-3">
                       <NavigationMenuLink asChild>
-                        <a
+                        <Link
                           className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-muted/50 to-muted p-6 no-underline outline-none focus:shadow-md"
-                          href="/"
+                          to="/home"
                         >
                           
                           <div className="mb-2 mt-4 text-lg font-medium">
-                            shadcn/ui
+                            GatoCósmico
                           </div>
                           <p className="text-sm leading-tight text-muted-foreground">
-                            Beautifully designed components built with Radix UI and
-                            Tailwind CSS.
+                            Revisa tu panel central para ver las últimas novedades.
                           </p>
-                        </a>
+                        </Link>
                       </NavigationMenuLink>
                     </li>
-                    <ListItem to="/docs" title="Introduction">
-                      Re-usable components built using Radix UI and Tailwind CSS.
-                    </ListItem>
-                    <ListItem to="/docs/installation" title="Installation">
-                      How to install dependencies and structure your app.
-                    </ListItem>
-                    <ListItem to="/docs/primitives/typography" title="Typography">
-                      Styles for headings, paragraphs, lists...etc
-                    </ListItem>
+                    {user.urls[0].urls.map((component, index) => (
+                      <ListItem key={component.title} to="/docs" title={component.title}>
+                        Re-usable components built using Radix UI and Tailwind CSS.
+                      </ListItem>  
+                    ))}
                   </ul>
                 </NavigationMenuContent>
               </NavigationMenuItem>
             }
-            {user && 
+            {user && user.urls.length > 1 && 
               <NavigationMenuItem>
                 <NavigationMenuTrigger>{user.urls[1].name}</NavigationMenuTrigger>
                 <NavigationMenuContent>

@@ -34,7 +34,8 @@ import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { generateDate } from "@/lib/utils"
 //import { useUserState } from "@/hooks/useUserState"
-//import { DateTimeFormatOptions } from 'intl';
+import { motion } from 'framer-motion';
+import { wavesBackground } from "@/lib/icons"
 
 interface Profile {
     nombre: string;
@@ -84,6 +85,16 @@ export default function Profile() {
 
     const { user } = context;
     //console.log(userState);
+    const cardVariants = {
+        hidden: { opacity: 0, y: -10 },
+        visible: (delay: number) => ({
+            opacity: 1,
+            y: 0,
+            transition: {
+                delay: delay, // Use the delay passed as a prop
+            },
+        }),
+    };
 
     const formProfile = useForm<z.infer<typeof formSchemaProfile>>({
         resolver: zodResolver(formSchemaProfile),
@@ -126,12 +137,12 @@ export default function Profile() {
         const response = await fetch('/usuario/profile', {
             method: 'PATCH',
             headers: {
-            'Content-Type': 'application/json',
-        },
+                'Content-Type': 'application/json',
+            },
             body: JSON.stringify(profile),
         });
 
-        if(response.ok){
+        if (response.ok) {
             //const body = await response.json();
             //console.log(body);
             toast(`Perfil Actualizado`, {
@@ -141,7 +152,7 @@ export default function Profile() {
                     onClick: () => console.log("Undo"),
                 },
             })
-        }else{
+        } else {
             toast(`Error al actualizar el Perfil`, {
                 description: generateDate(),
                 action: {
@@ -149,7 +160,7 @@ export default function Profile() {
                     onClick: () => console.log("Undo"),
                 },
             })
-        }      
+        }
     }
 
     async function handleUpdateAccount(values: z.infer<typeof formSchemaAccount>) {
@@ -160,12 +171,12 @@ export default function Profile() {
         const response = await fetch('/usuario/profile', {
             method: 'PATCH',
             headers: {
-            'Content-Type': 'application/json',
-        },
+                'Content-Type': 'application/json',
+            },
             body: JSON.stringify(account),
         });
 
-        if(response.ok){
+        if (response.ok) {
             //const body = await response.json();
             //console.log(body);
             toast(`Email Actualizado`, {
@@ -175,7 +186,7 @@ export default function Profile() {
                     onClick: () => console.log("Undo"),
                 },
             })
-        }else{
+        } else {
             toast(`Error al actualizar el Email`, {
                 description: generateDate(),
                 action: {
@@ -183,7 +194,7 @@ export default function Profile() {
                     onClick: () => console.log("Undo"),
                 },
             })
-        }   
+        }
     }
 
     async function handleUpdatePassword(values: z.infer<typeof formSchemaPassword>) {
@@ -196,12 +207,12 @@ export default function Profile() {
         const response = await fetch('/usuario/profile', {
             method: 'PUT',
             headers: {
-            'Content-Type': 'application/json',
-        },
+                'Content-Type': 'application/json',
+            },
             body: JSON.stringify(newpassword),
         });
 
-        if(response.ok){
+        if (response.ok) {
             //const body = await response.json();
             //console.log(body);
             toast(`Contraseña Actualizada`, {
@@ -211,7 +222,7 @@ export default function Profile() {
                     onClick: () => console.log("Undo"),
                 },
             })
-        }else{
+        } else {
             toast(`Error al actualizar la contraseña`, {
                 description: generateDate(),
                 action: {
@@ -219,8 +230,8 @@ export default function Profile() {
                     onClick: () => console.log("Undo"),
                 },
             })
-        }   
-        
+        }
+
     }
 
     function resetFormProfile(e: React.MouseEvent) {
@@ -248,17 +259,26 @@ export default function Profile() {
     }
 
     return (
-        <div className="flex gap-6 w-full p-6">
-            <div className="w-6/12 flex flex-col gap-5">
-                <Card className="w-full h-fit">
+        <div className="flex flex-col lg:flex-row gap-6 justify-center w-full p-6 flex-wrap">
+
+            <motion.div
+                className="w-full lg:w-5/12 h-fit"
+                variants={cardVariants}
+                initial="hidden"
+                animate="visible"
+                custom={0.2}
+            >
+                <Card className="relative bg-transparent">
+                    <div className="absolute h-full -z-10 w-full [mask-image:radial-gradient(black_75%,transparent)]">
+                        {wavesBackground}
+                    </div>
                     <CardHeader>
-                        <CardTitle>Perfil de Usuario</CardTitle>
+                        <CardTitle className="">Perfil de Usuario</CardTitle>
                         <CardDescription>Administra tus datos personales.</CardDescription>
                     </CardHeader>
                     <Form {...formProfile}>
-                        <form onSubmit={formProfile.handleSubmit(handleUpdateProfile)}>
-                            <CardContent className="z-20">
-
+                        <form className="" onSubmit={formProfile.handleSubmit(handleUpdateProfile)}>
+                            <CardContent>
                                 <div className="grid w-full items-center gap-4">
                                     <FormField control={formProfile.control} name="nombre"
                                         render={({ field }) => (
@@ -266,7 +286,7 @@ export default function Profile() {
                                                 <FormLabel>Nombre</FormLabel>
                                                 <FormControl>
                                                     <div className="flex flex-col space-y-1.5">
-                                                        <Input placeholder="Nombre" {...field} autoComplete="Nombre" autoCorrect="off" />
+                                                        <Input placeholder="Joe" {...field} autoComplete="Nombre" className="bg-zinc-50 dark:bg-zinc-950" autoCorrect="off" />
                                                     </div>
                                                 </FormControl>
                                                 <FormMessage />
@@ -280,7 +300,7 @@ export default function Profile() {
                                                 <FormLabel>Apellido</FormLabel>
                                                 <FormControl>
                                                     <div className="flex flex-col space-y-1.5">
-                                                        <Input placeholder="Apellido" {...field} autoComplete="Apellido" autoCorrect="off" />
+                                                        <Input placeholder="Doe" {...field} autoComplete="Apellido" className="bg-zinc-50 dark:bg-zinc-950" autoCorrect="off" />
                                                     </div>
                                                 </FormControl>
                                                 <FormMessage />
@@ -294,17 +314,14 @@ export default function Profile() {
                                                 <FormLabel>RUT</FormLabel>
                                                 <FormControl>
                                                     <div className="flex flex-col space-y-1.5">
-                                                        <Input placeholder="RUT" {...field} autoComplete="RUT" autoCorrect="off" />
+                                                        <Input placeholder="RUT" {...field} autoComplete="RUT" className="bg-zinc-50 dark:bg-zinc-950" autoCorrect="off" />
                                                     </div>
                                                 </FormControl>
                                                 <FormMessage />
                                             </FormItem>
                                         )}
                                     />
-
-
                                 </div>
-
                             </CardContent>
                             <CardFooter className="flex justify-between">
                                 <Button variant="outline" onClick={e => resetFormProfile(e)}>Reset</Button>
@@ -313,52 +330,19 @@ export default function Profile() {
                         </form>
                     </Form>
                 </Card>
+            </motion.div>
 
-                <Card className="w-full h-fit">
-                    <CardHeader>
-                        <CardTitle>Configuración de Cuenta</CardTitle>
-                        <CardDescription>Relacionado con la cuenta del sistema.</CardDescription>
-                    </CardHeader>
-                    <Form {...formAccount}>
-                        <form onSubmit={formAccount.handleSubmit(handleUpdateAccount)}>
-                            <CardContent>
-                                
-                                    <div className="grid w-full items-center gap-4">
-                                        <FormField control={formAccount.control} name="correo"
-                                            render={({ field }) => (
-                                                <FormItem>
-                                                    <FormLabel>Correo</FormLabel>
-                                                    <FormControl>
-                                                        <div className="flex flex-col space-y-1.5">
-                                                            <Input placeholder="Correo" {...field} autoComplete="Correo" autoCorrect="off" />
-                                                        </div>
-                                                    </FormControl>
-                                                    <FormMessage />
-                                                </FormItem>
-                                            )}
-                                        />
-                                        <div className="flex flex-col space-y-1.5">
-                                            <Label htmlFor="clinica">Clinica</Label>
-                                            <Input id="clinica" placeholder="PetVet" value={user?.clinica?.nombreFantasia} readOnly />
-                                        </div>
-                                        <div className="flex flex-col space-y-1.5">
-                                            <Label htmlFor="rol">Rol</Label>
-                                            <Input id="rol" value={user?.rol} readOnly />
-                                        </div>
-                                    </div>
-                                
-                            </CardContent>
-                            <CardFooter className="flex justify-between">
-                                <Button onClick={(e) => resetFormAccount(e)} variant="outline">Reset</Button>
-                                <Button type="submit">Guardar</Button>
-                            </CardFooter>
-                        </form>
-                    </Form>
-                </Card>
-            </div>
-
-            <div className="flex flex-col gap-6 w-full">
-                <Card className="w-full h-fit">
+            <motion.div
+                className="w-full lg:w-6/12 h-fit"
+                variants={cardVariants}
+                initial="hidden"
+                animate="visible"
+                custom={0.3}
+            >
+                <Card className="relative bg-transparent">
+                    <div className="absolute h-full -z-10 w-full [mask-image:radial-gradient(black_75%,transparent)]">
+                        {wavesBackground}
+                    </div>
                     <CardHeader>
                         <CardTitle>Cambiar Contraseña</CardTitle>
                         <CardDescription>Cambia tu contraseña para ingresar.</CardDescription>
@@ -367,7 +351,7 @@ export default function Profile() {
                     <Form {...formPassword}>
                         <form onSubmit={formPassword.handleSubmit(handleUpdatePassword)}>
                             <CardContent>
-                                <div className="flex gap-6">
+                                <div className="flex flex-col md:flex-row gap-6">
                                     <div className="grid w-full h-fit items-center gap-4">
 
                                         <div className="flex flex-col space-y-1.5">
@@ -377,7 +361,7 @@ export default function Profile() {
                                                         <FormLabel>Contraseña</FormLabel>
                                                         <FormControl>
                                                             <div className="flex flex-col space-y-1.5">
-                                                                <Input type="password" placeholder="******" {...field} autoComplete="contrasenaActual" autoCorrect="off" />
+                                                                <Input type="password" placeholder="******" {...field} className="bg-zinc-50 dark:bg-zinc-950" autoComplete="contrasenaActual" autoCorrect="off" />
                                                             </div>
                                                         </FormControl>
                                                         <FormMessage />
@@ -393,7 +377,7 @@ export default function Profile() {
                                                         <FormLabel>Nueva contraseña</FormLabel>
                                                         <FormControl>
                                                             <div className="flex flex-col space-y-1.5">
-                                                                <Input type="password" placeholder="******" {...field} onChange={(e) => {field.onChange(e); handleChange(e)}} autoComplete="nuevaContrasena" autoCorrect="off" />
+                                                                <Input type="password" placeholder="******" {...field} className="bg-zinc-50 dark:bg-zinc-950" onChange={(e) => { field.onChange(e); handleChange(e) }} autoComplete="nuevaContrasena" autoCorrect="off" />
                                                             </div>
                                                         </FormControl>
                                                         <FormMessage />
@@ -409,7 +393,7 @@ export default function Profile() {
                                                         <FormLabel>Repetir nueva contraseña</FormLabel>
                                                         <FormControl>
                                                             <div className="flex flex-col space-y-1.5">
-                                                                <Input type="password" placeholder="******" {...field} autoComplete="nuevaContrasena" autoCorrect="off" />
+                                                                <Input type="password" placeholder="******" {...field} className="bg-zinc-50 dark:bg-zinc-950" autoComplete="nuevaContrasena" autoCorrect="off" />
                                                             </div>
                                                         </FormControl>
                                                         <FormMessage />
@@ -464,7 +448,7 @@ export default function Profile() {
                                                                 </svg>
                                                             </span>
                                                         )}
-                                                        Debe tener minúsculas. 
+                                                        Debe tener minúsculas.
                                                     </li>
                                                     <li className={`flex items-center gap-x-2 ${/[A-Z]/.test(formPassword.getValues().nuevaContrasena) ? 'text-green-600' : 'text-zinc-500'}`}>
                                                         {/[A-Z]/.test(formPassword.getValues().nuevaContrasena) ? (
@@ -534,106 +518,175 @@ export default function Profile() {
                     </Form>
 
                 </Card>
+            </motion.div>
 
-                <div className="flex gap-6 h-full">
-                    <Card className="w-full">
-                        <div className="absolute overflow-hidden w-56 h-56">
-                            <div className="absolute -left-1 top-0 h-16 w-16">
-                                <div className="bg-blue-900 absolute transform -rotate-45 text-center text-white font-semibold py-1 left-[-34px] top-[32px] w-[170px]">
-                                    Soon
+            <motion.div
+                className="w-full lg:w-5/12 h-fit"
+                variants={cardVariants}
+                initial="hidden"
+                animate="visible"
+                custom={0.4}
+            >
+                <Card className="relative bg-transparent overflow-hidden">
+                    <div className="absolute h-fit w-full -z-10 [mask-image:radial-gradient(black_75%,transparent)]">
+                        {wavesBackground}
+                    </div>
+                    <CardHeader>
+                        <CardTitle>Configuración de Cuenta</CardTitle>
+                        <CardDescription>Relacionado con la cuenta del sistema.</CardDescription>
+                    </CardHeader>
+                    <Form {...formAccount}>
+                        <form onSubmit={formAccount.handleSubmit(handleUpdateAccount)}>
+                            <CardContent>
+
+                                <div className="grid w-full items-center gap-4">
+                                    <FormField control={formAccount.control} name="correo"
+                                        render={({ field }) => (
+                                            <FormItem>
+                                                <FormLabel>Correo</FormLabel>
+                                                <FormControl>
+                                                    <div className="flex flex-col space-y-1.5">
+                                                        <Input placeholder="Correo" {...field} className="bg-zinc-50 dark:bg-zinc-950" autoComplete="Correo" autoCorrect="off" />
+                                                    </div>
+                                                </FormControl>
+                                                <FormMessage />
+                                            </FormItem>
+                                        )}
+                                    />
+                                    <div className="flex flex-col space-y-1.5">
+                                        <Label htmlFor="clinica">Clinica</Label>
+                                        <Input id="clinica" placeholder="PetVet" className="bg-zinc-50 dark:bg-zinc-950" value={user?.clinica?.nombreFantasia} readOnly />
+                                    </div>
+                                    <div className="flex flex-col space-y-1.5">
+                                        <Label htmlFor="rol">Rol</Label>
+                                        <Input id="rol" value={user?.rol} className="bg-zinc-50 dark:bg-zinc-950" readOnly />
+                                    </div>
                                 </div>
+
+                            </CardContent>
+                            <CardFooter className="flex justify-between">
+                                <Button onClick={(e) => resetFormAccount(e)} variant="outline">Reset</Button>
+                                <Button type="submit">Guardar</Button>
+                            </CardFooter>
+                        </form>
+                    </Form>
+                </Card>
+
+            </motion.div>
+
+            <motion.div
+                className="w-full lg:w-3/12 h-fit"
+                variants={cardVariants}
+                initial="hidden"
+                animate="visible"
+                custom={0.5}
+            >
+                <Card className="">
+                    <div className="absolute overflow-hidden w-56 h-56">
+                        <div className="absolute -left-1 top-0 h-16 w-16">
+                            <div className="bg-blue-900 absolute transform -rotate-45 text-center text-white font-semibold py-1 left-[-34px] top-[32px] w-[170px]">
+                                Soon
                             </div>
                         </div>
-                        <CardHeader className="blur-sm">
-                            <CardTitle>Configuración de Cookies</CardTitle>
-                            <CardDescription>Administra tu configuración de cookies.</CardDescription>
-                        </CardHeader>
-                        <CardContent className="blur-sm">
-                            <div className="flex items-center justify-between py-2">
-                                <Label className="flex flex-col" htmlFor="correo">
-                                    Strictly Necessary
-                                    <span className="dark:text-zinc-400/90 text-xs leading-snug text-muted-foreground">
-                                        These cookies are essential in order to use the website and use its features.
-                                    </span>
-                                </Label>
-                                <div>
-                                    <Switch />
-                                </div>
-                            </div>
-                            <div className="flex items-center justify-between py-2">
-                                <Label className="flex flex-col" htmlFor="correo">
-                                    Functional Cookies
-                                    <span className="dark:text-zinc-400/90 text-xs leading-snug text-muted-foreground">
-                                        These cookies allow the website to provide personalized functionality.
-                                    </span>
-                                </Label>
-                                <div>
-                                    <Switch />
-                                </div>
-                            </div>
-                            <div className="flex items-center justify-between py-2">
-                                <Label className="flex flex-col" htmlFor="correo">
-                                    Performance Cookies
-                                    <span className="dark:text-zinc-400/90 text-xs leading-snug text-muted-foreground">
-                                        These cookies help to improve the performance of the website.
-                                    </span>
-                                </Label>
-                                <div>
-                                    <Switch />
-                                </div>
-                            </div>
-                        </CardContent>
-                        <CardFooter className="flex justify-between blur-sm">
-
-                            <Button>Guardar</Button>
-                        </CardFooter>
-                    </Card>
-
-                    <Card className="w-full h-fit">
-                        <div className="absolute overflow-hidden w-56 h-56">
-                            <div className="absolute -left-1 top-0 h-16 w-16">
-                                <div className="bg-blue-900 absolute transform -rotate-45 text-center text-white font-semibold py-1 left-[-34px] top-[32px] w-[170px]">
-                                    Soon
-                                </div>
+                    </div>
+                    <CardHeader className="blur-sm">
+                        <CardTitle>Configuración de Cookies</CardTitle>
+                        <CardDescription>Administra tu configuración de cookies.</CardDescription>
+                    </CardHeader>
+                    <CardContent className="blur-sm">
+                        <div className="flex items-center justify-between py-2">
+                            <Label className="flex flex-col" htmlFor="correo">
+                                Strictly Necessary
+                                <span className="dark:text-zinc-400/90 text-xs leading-snug text-muted-foreground">
+                                    These cookies are essential in order to use the website and use its features.
+                                </span>
+                            </Label>
+                            <div>
+                                <Switch />
                             </div>
                         </div>
-                        <CardHeader className="blur-sm">
-                            <CardTitle>Email Notifications</CardTitle>
-                            <CardDescription>Administra la configuración de notificaciones.</CardDescription>
-                        </CardHeader>
-                        <CardContent className="blur-sm">
-                            <div className="flex items-center justify-between py-2">
-                                <Label className="flex flex-col" htmlFor="correo">
-                                    Marketing emails
-                                    <span className="dark:text-zinc-400/90 text-xs leading-snug text-muted-foreground">
-                                        Receive emails about new products, features, and more.
-                                    </span>
-                                </Label>
-                                <div>
-                                    <Switch />
-                                </div>
+                        <div className="flex items-center justify-between py-2">
+                            <Label className="flex flex-col" htmlFor="correo">
+                                Functional Cookies
+                                <span className="dark:text-zinc-400/90 text-xs leading-snug text-muted-foreground">
+                                    These cookies allow the website to provide personalized functionality.
+                                </span>
+                            </Label>
+                            <div>
+                                <Switch />
                             </div>
-                            <div className="flex items-center justify-between py-2">
-                                <Label className="flex flex-col" htmlFor="correo">
-                                    Security emails
-                                    <span className="dark:text-zinc-400/90 text-xs leading-snug text-muted-foreground">
-                                        Receive emails about your account security.
-                                    </span>
-                                </Label>
-                                <div>
-                                    <Switch />
-                                </div>
+                        </div>
+                        <div className="flex items-center justify-between py-2">
+                            <Label className="flex flex-col" htmlFor="correo">
+                                Performance Cookies
+                                <span className="dark:text-zinc-400/90 text-xs leading-snug text-muted-foreground">
+                                    These cookies help to improve the performance of the website.
+                                </span>
+                            </Label>
+                            <div>
+                                <Switch />
                             </div>
-                        </CardContent>
-                        <CardFooter className="blur-sm flex justify-between">
+                        </div>
+                    </CardContent>
+                    <CardFooter className="flex justify-between blur-sm">
 
-                            <Button>Guardar</Button>
-                        </CardFooter>
-                    </Card>
+                        <Button>Guardar</Button>
+                    </CardFooter>
+                </Card>
 
-                </div>
-                
-            </div>
+            </motion.div>
+
+            <motion.div
+                className="w-full lg:w-3/12 h-fit"
+                variants={cardVariants}
+                initial="hidden"
+                animate="visible"
+                custom={0.6}
+            >
+                <Card className="">
+                    <div className="absolute overflow-hidden w-56 h-56">
+                        <div className="absolute -left-1 top-0 h-16 w-16">
+                            <div className="bg-blue-900 absolute transform -rotate-45 text-center text-white font-semibold py-1 left-[-34px] top-[32px] w-[170px]">
+                                Soon
+                            </div>
+                        </div>
+                    </div>
+                    <CardHeader className="blur-sm">
+                        <CardTitle>Email Notifications</CardTitle>
+                        <CardDescription>Administra la configuración de notificaciones.</CardDescription>
+                    </CardHeader>
+                    <CardContent className="blur-sm">
+                        <div className="flex items-center justify-between py-2">
+                            <Label className="flex flex-col" htmlFor="correo">
+                                Marketing emails
+                                <span className="dark:text-zinc-400/90 text-xs leading-snug text-muted-foreground">
+                                    Receive emails about new products, features, and more.
+                                </span>
+                            </Label>
+                            <div>
+                                <Switch />
+                            </div>
+                        </div>
+                        <div className="flex items-center justify-between py-2">
+                            <Label className="flex flex-col" htmlFor="correo">
+                                Security emails
+                                <span className="dark:text-zinc-400/90 text-xs leading-snug text-muted-foreground">
+                                    Receive emails about your account security.
+                                </span>
+                            </Label>
+                            <div>
+                                <Switch />
+                            </div>
+                        </div>
+                    </CardContent>
+                    <CardFooter className="blur-sm flex justify-between">
+
+                        <Button>Guardar</Button>
+                    </CardFooter>
+                </Card>
+
+            </motion.div>
+
         </div>
     )
 }
