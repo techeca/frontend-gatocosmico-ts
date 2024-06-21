@@ -229,7 +229,7 @@ export default function Agendamiento() {
         for (let i = 1; i <= daysInMonth; i++) {
             const dayOfWeek = new Date(year, month, i).getDay();
             const isWeekend = dayOfWeek === 6 || dayOfWeek === 0; // 6 is Saturday, 0 is Sunday
-            const weekendStyle = isWeekend ? 'dark:hover:bg-red-900/30 bg-red-800/10' : '';
+            const weekendStyle = isWeekend ? 'dark:hover:bg-red-900/20 bg-red-800/10' : '';
             calendar.push(<div onClick={() => multiSelect(i)} className={`calendar-day dark:hover:bg-zinc-900 hover:bg-zinc-100 cursor-pointer font-thin w-full p-3 h-[130px] ${selectedDay.find(l => l === i) ? 'border-2' : ''}  max-h-[130px] border-green-900/80 ${weekendStyle}`}>{i}</div>);
         }
 
