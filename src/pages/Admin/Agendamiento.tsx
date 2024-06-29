@@ -55,6 +55,10 @@ export default function Agendamiento() {
     const [dayOfWeek, setDayOfWeek] = useState({ lunes: false, martes: false, miercoles: false, jueves: false, viernes: false, sabado: false, domingo: false });
 
     function selectDayOfWeek(day: Day) {
+        console.log(day);
+        console.log(dayOfWeek.lunes);
+        
+        
         setDayOfWeek(prevState => ({ ...prevState, [day]: !prevState[day] }));
     }
 
@@ -222,20 +226,20 @@ export default function Agendamiento() {
 
         // Fill in days before the start of the current month
         for (let i = 0; i < firstDayIndex; i++) {
-            calendar.push(<div className="calendar-day empty w-full h-[130px] max-h-[130px] border-[0px] border-white"></div>);
+            calendar.push(<div key={`pre${i}`} className="calendar-day empty w-full h-[130px] max-h-[130px] border-[0px] border-white"></div>);
         }
 
         // Fill in the actual days of the month
         for (let i = 1; i <= daysInMonth; i++) {
             const dayOfWeek = new Date(year, month, i).getDay();
             const isWeekend = dayOfWeek === 6 || dayOfWeek === 0; // 6 is Saturday, 0 is Sunday
-            const weekendStyle = isWeekend ? 'dark:hover:bg-red-900/20 bg-red-800/10' : '';
-            calendar.push(<div onClick={() => multiSelect(i)} className={`calendar-day dark:hover:bg-zinc-900 hover:bg-zinc-100 cursor-pointer font-thin w-full p-3 h-[130px] ${selectedDay.find(l => l === i) ? 'border-2' : ''}  max-h-[130px] border-green-900/80 ${weekendStyle}`}>{i}</div>);
+            const weekendStyle = isWeekend ? 'dark:hover:bg-red-800/20 bg-red-800/10' : '';
+            calendar.push(<div key={i} onClick={() => multiSelect(i)} className={`calendar-day dark:hover:bg-zinc-900 hover:bg-zinc-100 cursor-pointer font-thin w-full p-3 h-[130px] ${selectedDay.find(l => l === i) ? 'border-2' : ''} max-h-[130px] border-green-900/80 ${weekendStyle}`}>{i}</div>);
         }
 
         // Fill in days after the end of the current month
         for (let i = lastDayIndex + 1; i < 7; i++) {
-            calendar.push(<div className="calendar-day empty h-[130px] w-full border-[0px] max-h-[130px] border-white"></div>);
+            calendar.push(<div key={`post${i}`} className="calendar-day empty h-[130px] w-full border-[0px] max-h-[130px] border-white"></div>);
         }
 
         return calendar;
@@ -559,13 +563,12 @@ export default function Agendamiento() {
                             </div>
                             <div className="grid grid-cols-7 mt-3">
 
-                                <div onClick={() => selectDayOfWeek('lunes')} className={`${dayOfWeek.lunes ? `dark:bg-green-600/30 hover:dark:bg-green-600/40 bg-green-600/50` : `border-[0px]`}  h-9 w-9 dark:bg-zinc-900 rounded-lg cursor-pointer bg-zinc-100 hover:bg-zinc-200 dark:hover:bg-zinc-800`}></div>
-                                <div onClick={() => selectDayOfWeek('martes')} className={`${dayOfWeek[`martes`] ? `dark:bg-green-600/30 hover:dark:bg-green-600/40 bg-green-600/50` : `border-[0px]`} h-9 w-9 dark:bg-zinc-900 rounded-lg cursor-pointer bg-zinc-100 hover:bg-zinc-200 dark:hover:bg-zinc-800`}></div>
-                                <div onClick={() => selectDayOfWeek('miercoles')} className={`${dayOfWeek[`miercoles`] ? `dark:bg-green-600/30 hover:dark:bg-green-600/40 bg-green-600/50` : `border-[0px]`} h-9 w-9 dark:bg-zinc-900 rounded-lg cursor-pointer bg-zinc-100 hover:bg-zinc-200 dark:hover:bg-zinc-800`}></div>
-                                <div onClick={() => selectDayOfWeek('jueves')} className={`${dayOfWeek[`jueves`] ? `dark:bg-green-600/30 hover:dark:bg-green-600/40 bg-green-600/50` : `border-[0px]`} h-9 w-9 dark:bg-zinc-900 rounded-lg cursor-pointer bg-zinc-100 hover:bg-zinc-200 dark:hover:bg-zinc-800`}></div>
-                                <div onClick={() => selectDayOfWeek('viernes')} className={`${dayOfWeek[`viernes`] ? `dark:bg-green-600/30 hover:dark:bg-green-600/40 bg-green-600/50` : `border-[0px]`} h-9 w-9 dark:bg-zinc-900 rounded-lg cursor-pointer bg-zinc-100 hover:bg-zinc-200 dark:hover:bg-zinc-800`}></div>
-                                <div onClick={() => selectDayOfWeek('sabado')} className={`${dayOfWeek[`sabado`] ? `dark:bg-green-600/30 hover:dark:bg-green-600/40 bg-green-600/50` : `border-[0px]`} h-9 w-9 dark:bg-zinc-900 rounded-lg cursor-pointer bg-zinc-100 hover:bg-zinc-200 dark:hover:bg-zinc-800`}></div>
-                                <div onClick={() => selectDayOfWeek('domingo')} className={`${dayOfWeek[`domingo`] ? `dark:bg-green-600/30 hover:dark:bg-green-600/40 bg-green-600/50` : `border-[0px]`} h-9 w-9 dark:bg-zinc-900 rounded-lg cursor-pointer bg-zinc-100 hover:bg-zinc-200 dark:hover:bg-zinc-800`}></div>
+                                {Object.keys(dayOfWeek).map((d) => 
+                                    <div key={d} onClick={() => selectDayOfWeek(d as Day)} 
+                                        className={`h-9 w-9 dark:bg-zinc-900 rounded-lg cursor-pointer bg-zinc-100 hover:bg-zinc-200 dark:hover:bg-zinc-800`}
+                                        style={{backgroundColor:`${dayOfWeek[d as Day] ? `#16a34a66` : ``}`}}></div>
+                                )}
+
                             </div>
                         </div>
                         <DialogFooter className="sm:justify-start">
@@ -583,7 +586,7 @@ export default function Agendamiento() {
                         <DialogTrigger asChild>
                             <div className="w-48 border-[0px] border-white p-6 flex justify-center">
                                 <div className="flex-col gap-1 cursor-pointer hover:dark:bg-zinc-800 border-[0px] hover:bg-zinc-200 border-white w-24 h-24 text-zinc-400 dark:text-zinc-500 rounded-2xl bg-zinc-100 dark:bg-zinc-900 flex items-center justify-center">
-                                    <svg width="32" height="32" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 2.75C8 2.47386 7.77614 2.25 7.5 2.25C7.22386 2.25 7 2.47386 7 2.75V7H2.75C2.47386 7 2.25 7.22386 2.25 7.5C2.25 7.77614 2.47386 8 2.75 8H7V12.25C7 12.5261 7.22386 12.75 7.5 12.75C7.77614 12.75 8 12.5261 8 12.25V8H12.25C12.5261 8 12.75 7.77614 12.75 7.5C12.75 7.22386 12.5261 7 12.25 7H8V2.75Z" fill="currentColor" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
+                                    <svg width="32" height="32" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 2.75C8 2.47386 7.77614 2.25 7.5 2.25C7.22386 2.25 7 2.47386 7 2.75V7H2.75C2.47386 7 2.25 7.22386 2.25 7.5C2.25 7.77614 2.47386 8 2.75 8H7V12.25C7 12.5261 7.22386 12.75 7.5 12.75C7.77614 12.75 8 12.5261 8 12.25V8H12.25C12.5261 8 12.75 7.77614 12.75 7.5C12.75 7.22386 12.5261 7 12.25 7H8V2.75Z" fill="currentColor" fillRule="evenodd" clipRule="evenodd"></path></svg>
                                     <p>Medio día</p>
                                 </div>
                             </div>
@@ -591,7 +594,7 @@ export default function Agendamiento() {
                         :
                         <div onClick={noDaySelected} className="w-48 border-[0px] border-white p-6 flex justify-center">
                             <div className="flex-col gap-1 cursor-pointer hover:dark:bg-zinc-800 border-[0px] hover:bg-zinc-200 border-white w-24 h-24 text-zinc-400 dark:text-zinc-500 rounded-2xl bg-zinc-100 dark:bg-zinc-900 flex items-center justify-center">
-                                <svg width="32" height="32" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 2.75C8 2.47386 7.77614 2.25 7.5 2.25C7.22386 2.25 7 2.47386 7 2.75V7H2.75C2.47386 7 2.25 7.22386 2.25 7.5C2.25 7.77614 2.47386 8 2.75 8H7V12.25C7 12.5261 7.22386 12.75 7.5 12.75C7.77614 12.75 8 12.5261 8 12.25V8H12.25C12.5261 8 12.75 7.77614 12.75 7.5C12.75 7.22386 12.5261 7 12.25 7H8V2.75Z" fill="currentColor" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
+                                <svg width="32" height="32" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 2.75C8 2.47386 7.77614 2.25 7.5 2.25C7.22386 2.25 7 2.47386 7 2.75V7H2.75C2.47386 7 2.25 7.22386 2.25 7.5C2.25 7.77614 2.47386 8 2.75 8H7V12.25C7 12.5261 7.22386 12.75 7.5 12.75C7.77614 12.75 8 12.5261 8 12.25V8H12.25C12.5261 8 12.75 7.77614 12.75 7.5C12.75 7.22386 12.5261 7 12.25 7H8V2.75Z" fill="currentColor" fillRule="evenodd" clipRule="evenodd"></path></svg>
                                 <p>Medio día</p>
                             </div>
                         </div>
@@ -629,7 +632,7 @@ export default function Agendamiento() {
                     <DialogTrigger asChild>
                         <div className="w-48 border-[0px] border-white p-6 flex justify-center">
                             <div className="flex-col gap-1 cursor-pointer hover:dark:bg-zinc-800 border-[0px] hover:bg-zinc-200 border-white w-24 h-24 text-zinc-400 dark:text-zinc-500 rounded-2xl bg-zinc-100 dark:bg-zinc-900 flex items-center justify-center">
-                                <svg width="32" height="32" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 2.75C8 2.47386 7.77614 2.25 7.5 2.25C7.22386 2.25 7 2.47386 7 2.75V7H2.75C2.47386 7 2.25 7.22386 2.25 7.5C2.25 7.77614 2.47386 8 2.75 8H7V12.25C7 12.5261 7.22386 12.75 7.5 12.75C7.77614 12.75 8 12.5261 8 12.25V8H12.25C12.5261 8 12.75 7.77614 12.75 7.5C12.75 7.22386 12.5261 7 12.25 7H8V2.75Z" fill="currentColor" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
+                                <svg width="32" height="32" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 2.75C8 2.47386 7.77614 2.25 7.5 2.25C7.22386 2.25 7 2.47386 7 2.75V7H2.75C2.47386 7 2.25 7.22386 2.25 7.5C2.25 7.77614 2.47386 8 2.75 8H7V12.25C7 12.5261 7.22386 12.75 7.5 12.75C7.77614 12.75 8 12.5261 8 12.25V8H12.25C12.5261 8 12.75 7.77614 12.75 7.5C12.75 7.22386 12.5261 7 12.25 7H8V2.75Z" fill="currentColor" fillRule="evenodd" clipRule="evenodd"></path></svg>
                                 <p>Feriados</p>
                             </div>
                         </div>

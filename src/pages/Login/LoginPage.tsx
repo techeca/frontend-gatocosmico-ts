@@ -66,8 +66,9 @@ export default function LoginPage() {
       body: JSON.stringify(user),
     });
 
-    if (response.ok) {
+    if (response.status === 200) {
       //obtener cuerpo de la respuesta
+      console.log(response);
       const body = await response.json();
       setUser(body.usuario);
       navigate('/profile', { replace: true })
@@ -81,7 +82,13 @@ export default function LoginPage() {
       })
     } else {
       // manejo de errores 
-      console.log(response);
+      toast(response.statusText, {
+        description: generateDate(),
+        action: {
+          label: "Cerrar",
+          onClick: () => console.log("Undo"),
+        },
+      })
     }
   }
 
@@ -91,8 +98,8 @@ export default function LoginPage() {
     }).then(() => {
       setInit(true);
     });
-    sessionStorage.clear();
-    sessionStorage.removeItem('userData');
+    //sessionStorage.clear();
+    //sessionStorage.removeItem('userData');
   }, [user]);
 
   const options: ISourceOptions = useMemo(

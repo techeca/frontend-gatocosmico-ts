@@ -13,6 +13,7 @@ export function useUserState() {
 
     useEffect(() => {
         setIsUser(!!user);
+        console.log('useEffect useUserState');
     }, [user]);
 
     return isUser;

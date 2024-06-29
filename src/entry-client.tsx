@@ -9,13 +9,6 @@ import { User } from './contexts/UserContext'
 
 export type Theme = 'light' | 'dark' | 'system';
 
-
-/*function getCookie(name: string) {
-    const value = `; ${document.cookie}`;
-    const parts = value.split(`; ${name}=`);
-    if (parts.length === 2) return parts.pop()?.split(';').shift();
-  }*/
-  
 let theme = localStorage.getItem('vite-ui-theme');
 const userData = sessionStorage.getItem('userData');
 let user: User | null = null;
@@ -31,10 +24,6 @@ if (userData) {
 if (theme !== 'light' && theme !== 'dark' && theme !== 'system') {
     theme = 'system';
   }
-
-
-
-//console.log(localStorage.getItem('vite-ui-theme'));
 
 const router = createBrowserRouter(routes)
 

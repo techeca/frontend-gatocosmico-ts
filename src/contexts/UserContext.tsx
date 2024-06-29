@@ -1,6 +1,4 @@
 import { createContext, useState, ReactNode, useEffect } from 'react';
-//import { getSession } from '../middlewares/utils.js';
-//import useAlerts from '../hooks/useAlerts.jsx';
 
 // Define a type for your user object
 export interface User {
@@ -34,8 +32,7 @@ export interface User {
 
 export const UserProvider = ({ children, initialSession }: UserProviderProps) => {
     const [user, setUser] = useState<User | null | undefined>(initialSession);
-    
-    //console.log(localStorage.getItem('vite-ui-theme'));
+
     useEffect(() => {
       sessionStorage.setItem('userData', JSON.stringify(user));
     }, [user])
