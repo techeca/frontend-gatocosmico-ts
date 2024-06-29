@@ -76,10 +76,11 @@ const authentication = (req: LoginRequest & { session:MySession}, res: Response)
         })
         .catch(error => {
             //const errorData = await externalResponse.text();
-            res.status(error.status).json({ error: error.message, redirect: '/login'});
+            
+            //res.status(error.status).json({ error: error.message, redirect: '/login'});
             //next(error); // Pasa el error a la siguiente middleware
             console.log(error);
-            
+            res.status(500).json(error)
         });
 
     } catch (error) {

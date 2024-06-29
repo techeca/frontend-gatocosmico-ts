@@ -56,4 +56,6 @@ async function createServer() {
 });
 }
 
-createServer()
+createServer().catch(error => {
+  console.error('Error al iniciar el servidor', error);
+})
