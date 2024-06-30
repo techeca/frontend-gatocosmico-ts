@@ -57,8 +57,8 @@ export default function Agendamiento() {
     function selectDayOfWeek(day: Day) {
         console.log(day);
         console.log(dayOfWeek.lunes);
-        
-        
+
+
         setDayOfWeek(prevState => ({ ...prevState, [day]: !prevState[day] }));
     }
 
@@ -291,7 +291,7 @@ export default function Agendamiento() {
                                                 render={({ field }) => (
                                                     <FormItem className="w-full">
                                                         <FormControl>
-                                                            <Select onValueChange={field.onChange} {...field}>
+                                                            <Select onValueChange={field.onChange} defaultValue={field.value}>
                                                                 <SelectTrigger className="w-full">
                                                                     <SelectValue placeholder="Hora" />
                                                                 </SelectTrigger>
@@ -313,7 +313,7 @@ export default function Agendamiento() {
                                                 render={({ field }) => (
                                                     <FormItem className="w-full">
                                                         <FormControl>
-                                                            <Select onValueChange={field.onChange} {...field}>
+                                                            <Select onValueChange={field.onChange} defaultValue={field.value}>
                                                                 <SelectTrigger className="w-full">
                                                                     <SelectValue placeholder="Minutos" />
                                                                 </SelectTrigger>
@@ -341,7 +341,7 @@ export default function Agendamiento() {
                                                 render={({ field }) => (
                                                     <FormItem className="w-full">
                                                         <FormControl>
-                                                            <Select onValueChange={field.onChange} {...field}>
+                                                            <Select onValueChange={field.onChange} defaultValue={field.value}>
                                                                 <SelectTrigger className="w-full">
                                                                     <SelectValue placeholder="Hora" />
                                                                 </SelectTrigger>
@@ -363,7 +363,7 @@ export default function Agendamiento() {
                                                 render={({ field }) => (
                                                     <FormItem className="w-full">
                                                         <FormControl>
-                                                            <Select onValueChange={field.onChange} {...field}>
+                                                            <Select onValueChange={field.onChange} defaultValue={field.value}>
                                                                 <SelectTrigger className="w-full">
                                                                     <SelectValue placeholder="Minutos" />
                                                                 </SelectTrigger>
@@ -427,7 +427,7 @@ export default function Agendamiento() {
                                                 render={({ field }) => (
                                                     <FormItem className="w-full">
                                                         <FormControl>
-                                                            <Select onValueChange={field.onChange} {...field}>
+                                                            <Select onValueChange={field.onChange} defaultValue={field.value}>
                                                                 <SelectTrigger className="w-full">
                                                                     <SelectValue placeholder="Hora" />
                                                                 </SelectTrigger>
@@ -449,7 +449,7 @@ export default function Agendamiento() {
                                                 render={({ field }) => (
                                                     <FormItem className="w-full">
                                                         <FormControl>
-                                                            <Select onValueChange={field.onChange} {...field}>
+                                                            <Select onValueChange={field.onChange} defaultValue={field.value}>
                                                                 <SelectTrigger className="w-full">
                                                                     <SelectValue placeholder="Minutos" />
                                                                 </SelectTrigger>
@@ -477,7 +477,7 @@ export default function Agendamiento() {
                                                 render={({ field }) => (
                                                     <FormItem className="w-full">
                                                         <FormControl>
-                                                            <Select onValueChange={field.onChange} {...field}>
+                                                            <Select onValueChange={field.onChange} defaultValue={field.value}>
                                                                 <SelectTrigger className="w-full">
                                                                     <SelectValue placeholder="Hora" />
                                                                 </SelectTrigger>
@@ -499,7 +499,7 @@ export default function Agendamiento() {
                                                 render={({ field }) => (
                                                     <FormItem className="w-full">
                                                         <FormControl>
-                                                            <Select onValueChange={field.onChange} {...field}>
+                                                            <Select onValueChange={field.onChange} defaultValue={field.value}>
                                                                 <SelectTrigger className="w-full">
                                                                     <SelectValue placeholder="Minutos" />
                                                                 </SelectTrigger>
@@ -563,10 +563,10 @@ export default function Agendamiento() {
                             </div>
                             <div className="grid grid-cols-7 mt-3">
 
-                                {Object.keys(dayOfWeek).map((d) => 
-                                    <div key={d} onClick={() => selectDayOfWeek(d as Day)} 
+                                {Object.keys(dayOfWeek).map((d) =>
+                                    <div key={d} onClick={() => selectDayOfWeek(d as Day)}
                                         className={`h-9 w-9 dark:bg-zinc-900 rounded-lg cursor-pointer bg-zinc-100 hover:bg-zinc-200 dark:hover:bg-zinc-800`}
-                                        style={{backgroundColor:`${dayOfWeek[d as Day] ? `#16a34a66` : ``}`}}></div>
+                                        style={{ backgroundColor: `${dayOfWeek[d as Day] ? `#16a34a66` : ``}` }}></div>
                                 )}
 
                             </div>
@@ -673,55 +673,55 @@ export default function Agendamiento() {
 
             <div className="w-full border-[0px] h-full border-white py-6 pr-6">
 
-            <motion.div
-                className="h-full w-full hidden lg:block sticky top-16"
-                variants={cardVariants}
-                initial="hidden"
-                animate="visible"
-                custom={0.2}
-            >
-                <Card className="w-full h-full">
-                    <CardHeader className="text-center flex flex-row items-center justify-between">
-                        <div className="flex gap-3">
-                            <div className="text-sm text-start">
-                                <p>Hora de atención: <span className="ml-2 text-xs text-zinc-500"><em>{calendarConfig.startHour ? `${calendarConfig.startHour}-${calendarConfig.endHour} hrs.` : `No configurado`}</em></span></p>
-                                <p>Hora de descanso: <span className="ml-2 text-xs text-zinc-500"><em>{calendarConfig.startBreak ? `${calendarConfig.startBreak}-${calendarConfig.endBreak} hrs.` : `No configurado`}</em></span></p>
+                <motion.div
+                    className="h-full w-full hidden lg:block sticky top-16"
+                    variants={cardVariants}
+                    initial="hidden"
+                    animate="visible"
+                    custom={0.2}
+                >
+                    <Card className="w-full h-full">
+                        <CardHeader className="text-center flex flex-row items-center justify-between">
+                            <div className="flex gap-3">
+                                <div className="text-sm text-start">
+                                    <p>Hora de atención: <span className="ml-2 text-xs text-zinc-500"><em>{calendarConfig.startHour ? `${calendarConfig.startHour}-${calendarConfig.endHour} hrs.` : `No configurado`}</em></span></p>
+                                    <p>Hora de descanso: <span className="ml-2 text-xs text-zinc-500"><em>{calendarConfig.startBreak ? `${calendarConfig.startBreak}-${calendarConfig.endBreak} hrs.` : `No configurado`}</em></span></p>
+                                </div>
+                                <div className="text-sm text-start">
+                                    <p>Días de atención: <span className="ml-2 text-xs text-zinc-500 capitalize"><em>{calendarConfig.days ? `${getFirstAndLastTrueDay()}` : `No configurado`}</em></span></p>
+                                    <p className="sr-only">Feriados: <span className=" ml-2 text-xs text-zinc-500"><em>No configurado</em></span></p>
+                                </div>
                             </div>
-                            <div className="text-sm text-start">
-                                <p>Días de atención: <span className="ml-2 text-xs text-zinc-500 capitalize"><em>{calendarConfig.days ? `${getFirstAndLastTrueDay()}` : `No configurado`}</em></span></p>
-                                <p className="sr-only">Feriados: <span className=" ml-2 text-xs text-zinc-500"><em>No configurado</em></span></p>
+                            <div className="flex justify-start items-center gap-9">
+                                <Button>Guardar</Button>
+                                <Button variant="outline" onClick={decrementMonth} size="icon">
+                                    <ChevronLeftIcon className="h-4 w-4" />
+                                </Button>
+                                <CardTitle className="uppercase">{`${actualdate.toLocaleString('default', { month: 'long' })}/${actualdate.getFullYear()}`}</CardTitle>
+                                <Button variant="outline" onClick={incrementMonth} size="icon">
+                                    <ChevronRightIcon className="h-4 w-4" />
+                                </Button>
                             </div>
-                        </div>
-                        <div className="flex justify-start items-center gap-9">
-                            <Button>Guardar</Button>
-                            <Button variant="outline" onClick={decrementMonth} size="icon">
-                                <ChevronLeftIcon className="h-4 w-4" />
-                            </Button>
-                            <CardTitle className="uppercase">{`${actualdate.toLocaleString('default', { month: 'long' })}/${actualdate.getFullYear()}`}</CardTitle>
-                            <Button variant="outline" onClick={incrementMonth} size="icon">
-                                <ChevronRightIcon className="h-4 w-4" />
-                            </Button>
-                        </div>
-                    </CardHeader>
-                    <Separator />
-                    <CardContent className="">
-                        <div className="grid text-center grid-cols-7 w-full py-6">
-                            <p>LUNES</p>
-                            <p>MARTES</p>
-                            <p>MIERCOLES</p>
-                            <p>JUEVES</p>
-                            <p>VIERNES</p>
-                            <p>SABADO</p>
-                            <p>DOMINGO</p>
-                        </div>
-                        <div className="calendar grid grid-cols-7 w-full pt-6">
-                            {generateCalendar()}
-                        </div>
-                    </CardContent>
-                </Card>
-            </motion.div>
+                        </CardHeader>
+                        <Separator />
+                        <CardContent className="">
+                            <div className="grid text-center grid-cols-7 w-full py-6">
+                                <p>LUNES</p>
+                                <p>MARTES</p>
+                                <p>MIERCOLES</p>
+                                <p>JUEVES</p>
+                                <p>VIERNES</p>
+                                <p>SABADO</p>
+                                <p>DOMINGO</p>
+                            </div>
+                            <div className="calendar grid grid-cols-7 w-full pt-6">
+                                {generateCalendar()}
+                            </div>
+                        </CardContent>
+                    </Card>
+                </motion.div>
 
             </div>
-        </div>
+        </div >
     )
 }

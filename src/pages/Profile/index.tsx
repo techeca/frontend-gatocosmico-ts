@@ -35,7 +35,6 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { generateDate } from "@/lib/utils"
 //import { useUserState } from "@/hooks/useUserState"
 import { motion } from 'framer-motion';
-import { wavesBackground } from "@/lib/icons"
 
 interface Profile {
     nombre: string;
@@ -258,6 +257,7 @@ export default function Profile() {
         });
     }
 
+    
     return (
         <div className="flex flex-col lg:flex-row gap-6 justify-center w-full p-6 flex-wrap">
 
@@ -270,7 +270,7 @@ export default function Profile() {
             >
                 <Card className="relative bg-transparent">
                     <div className="absolute h-full -z-10 w-full [mask-image:radial-gradient(black_75%,transparent)]">
-                        {wavesBackground}
+                        
                     </div>
                     <CardHeader>
                         <CardTitle className="">Perfil de Usuario</CardTitle>
@@ -341,7 +341,7 @@ export default function Profile() {
             >
                 <Card className="relative bg-transparent">
                     <div className="absolute h-full -z-10 w-full [mask-image:radial-gradient(black_75%,transparent)]">
-                        {wavesBackground}
+                        
                     </div>
                     <CardHeader>
                         <CardTitle>Cambiar Contraseña</CardTitle>
@@ -393,7 +393,7 @@ export default function Profile() {
                                                         <FormLabel>Repetir nueva contraseña</FormLabel>
                                                         <FormControl>
                                                             <div className="flex flex-col space-y-1.5">
-                                                                <Input type="password" placeholder="******" {...field} className="bg-zinc-50 dark:bg-zinc-950" autoComplete="nuevaContrasena" autoCorrect="off" />
+                                                                <Input type="password" placeholder="******" {...field} className="bg-zinc-50 dark:bg-zinc-950" autoComplete="reNuevaContrasena" autoCorrect="off" />
                                                             </div>
                                                         </FormControl>
                                                         <FormMessage />
@@ -527,9 +527,9 @@ export default function Profile() {
                 animate="visible"
                 custom={0.4}
             >
-                <Card className="relative bg-transparent overflow-hidden">
-                    <div className="absolute h-fit w-full -z-10 [mask-image:radial-gradient(black_75%,transparent)]">
-                        {wavesBackground}
+                <Card className="relative bg-transparent">
+                    <div className="absolute h-full w-full -z-10 [mask-image:radial-gradient(black_75%,transparent)]">
+                        
                     </div>
                     <CardHeader>
                         <CardTitle>Configuración de Cuenta</CardTitle>

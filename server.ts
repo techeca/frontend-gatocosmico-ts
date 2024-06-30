@@ -14,6 +14,7 @@ import authentication from './service/middlewares/authentication.ts';
 import { authorization } from './service/middlewares/authorization.ts';
 import { usuarioRouter } from './service/routes/usuario/index.ts';
 import { adminRouter } from './service/routes/admin/index.ts';
+import cookieParser from 'cookie-parser';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const PORT = process.env.PORT || 5180;
@@ -27,8 +28,9 @@ async function createServer() {
   app.use(vite.middlewares);
   app.use(express.json());
   app.use(express.urlencoded({ extended: true }));
-  app.use(sessionMiddleware)
-  app.use(authorization)
+  app.use(cookieParser());
+  app.use(sessionMiddleware);
+  app.use(authorization);
   
   //solicitudes públicas
   app.post('/login', authentication)

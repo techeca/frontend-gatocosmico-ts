@@ -1,4 +1,4 @@
-export const wavesBackground = <svg viewBox="0 0 384 449" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="currentColor" className="-z-0 shrink-0">
+export const wavesBackground = <svg viewBox="0 0 384 449" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="currentColor" className="-z-0">
     <path d="M-237.773 351.499C-237.773 351.499 -126.464 147.214 144.19 281.945C414.844 416.676 526.153 212.391 526.153 212.391" stroke="currentColor" strokeOpacity="0.05" strokeWidth="0.5"></path>
     <path d="M-258.24 10.5493C-258.24 10.5493 -146.931 -193.736 123.723 -59.0046C394.378 75.7266 505.687 -128.559 505.687 -128.559" stroke="currentColor" strokeOpacity="0.05" strokeWidth="0.5"></path>
     <path d="M-237.394 357.812C-237.394 357.812 -126.085 153.527 144.569 288.258C415.223 422.989 526.532 218.704 526.532 218.704" stroke="currentColor" strokeOpacity="0.05" strokeWidth="0.5"></path>

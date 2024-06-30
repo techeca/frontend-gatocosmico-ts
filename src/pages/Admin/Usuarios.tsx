@@ -89,11 +89,11 @@ export default function Usuarios() {
     const formOldUser = useForm<z.infer<typeof formSchemaOldUser>>({
         resolver: zodResolver(formSchemaOldUser),
         defaultValues: {
-            nombre: '',
-            apellido: '',
-            correo: '',
-            rut: '',
-            rol: '',
+            nombre: selectedUser.nombre,
+            apellido: selectedUser.apellido,
+            correo: selectedUser.correo,
+            rut: selectedUser.rut,
+            rol: selectedUser.rol.nombre,
         },
     });
 
@@ -116,24 +116,24 @@ export default function Usuarios() {
         formOldUser.reset({
             nombre: user.nombre,
             apellido: user.apellido,
-            correo: user.correo,
             rut: user.rut,
+            correo: user.correo,
             rol: user.rol.nombre
         })
+        console.log(user);
+
     }
 
     function newUser() {
         setIsNewUser(true)
-        const user: User = {
+        formNewUser.reset({
             nombre: '',
             apellido: '',
             correo: '',
             rut: '',
-            rol: {
-                nombre: ''
-            }
-        }
-        setSelectedUser(user)
+            rol: ''
+        })
+        //setSelectedUser(user)
     }
 
     async function handleNewUser(values: z.infer<typeof formSchemaNewUser>) {
@@ -344,113 +344,110 @@ export default function Usuarios() {
                             <CardDescription>Administra tus datos personales.</CardDescription>
                         </CardHeader>
 
-                        <Form {...formOldUser}>
-                            <form onSubmit={formOldUser.handleSubmit(handleUpdateUser)}>
-                                <CardContent>
-                                    <div className='flex flex-col gap-3 '>
-                                        {/*<div className='w-full'>
+                        {isNewUser === true &&
+                            <Form {...formNewUser}>
+                                <form onSubmit={formNewUser.handleSubmit(handleNewUser)}>
+                                    <CardContent>
+                                        <div className='flex flex-col gap-3 '>
+                                            {/*<div className='w-full'>
                                         <div className='p-6 w-full border-[1px] rounded-md'>
                                             detalles
                                         </div>
                                         </div>*/}
-                                        <div className='flex items-center gap-3'>
-                                            <div className='flex flex-col w-full'>
-                                                <FormField control={formOldUser.control} name="nombre"
-                                                    render={({ field }) => (
-                                                        <FormItem>
-                                                            <FormLabel>Email</FormLabel>
-                                                            <FormControl>
-                                                                <Input placeholder="Nombre" {...field} autoComplete="nombre" autoCorrect="off" />
-                                                            </FormControl>
-                                                            <FormMessage />
-                                                        </FormItem>
-                                                    )}
-                                                />
+                                            <div className='flex items-center gap-3'>
+                                                <div className='flex flex-col w-full'>
+                                                    <FormField control={formNewUser.control} name="nombre"
+                                                        render={({ field }) => (
+                                                            <FormItem>
+                                                                <FormLabel>Email</FormLabel>
+                                                                <FormControl>
+                                                                    <Input placeholder="Nombre" {...field} autoComplete="nombre" autoCorrect="off" />
+                                                                </FormControl>
+                                                                <FormMessage />
+                                                            </FormItem>
+                                                        )}
+                                                    />
+                                                </div>
+
+                                                <div className='flex flex-col w-full'>
+                                                    <FormField control={formNewUser.control} name="apellido"
+                                                        render={({ field }) => (
+                                                            <FormItem>
+                                                                <FormLabel>Apellido</FormLabel>
+                                                                <FormControl>
+                                                                    <Input placeholder="Apellido" {...field} autoComplete="apellido" autoCorrect="off" />
+                                                                </FormControl>
+                                                                <FormMessage />
+                                                            </FormItem>
+                                                        )}
+                                                    />
+                                                </div>
                                             </div>
+                                            <div className='flex items-center gap-3'>
+                                                <div className='flex flex-col w-full'>
+                                                    <FormField control={formNewUser.control} name="rut"
+                                                        render={({ field }) => (
+                                                            <FormItem>
+                                                                <FormLabel>RUT</FormLabel>
+                                                                <FormControl>
+                                                                    <Input placeholder="RUT" {...field} autoComplete="rut" autoCorrect="off" />
+                                                                </FormControl>
+                                                                <FormMessage />
+                                                            </FormItem>
+                                                        )}
+                                                    />
+                                                </div>
 
-                                            <div className='flex flex-col w-full'>
-                                                <FormField control={formOldUser.control} name="apellido"
-                                                    render={({ field }) => (
-                                                        <FormItem>
-                                                            <FormLabel>Apellido</FormLabel>
-                                                            <FormControl>
-                                                                <Input placeholder="Apellido" {...field} autoComplete="apellido" autoCorrect="off" />
-                                                            </FormControl>
-                                                            <FormMessage />
-                                                        </FormItem>
-                                                    )}
-                                                />
+                                                <div className='flex flex-col w-full'>
+                                                    <FormField control={formNewUser.control} name="correo"
+                                                        render={({ field }) => (
+                                                            <FormItem>
+                                                                <FormLabel>Correo</FormLabel>
+                                                                <FormControl>
+                                                                    <Input placeholder="Correo" {...field} autoComplete="correo" autoCorrect="off" />
+                                                                </FormControl>
+                                                                <FormMessage />
+                                                            </FormItem>
+                                                        )}
+                                                    />
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div className='flex items-center gap-3'>
-                                            <div className='flex flex-col w-full'>
-                                                <FormField control={formOldUser.control} name="rut"
-                                                    render={({ field }) => (
-                                                        <FormItem>
-                                                            <FormLabel>RUT</FormLabel>
-                                                            <FormControl>
-                                                                <Input placeholder="RUT" {...field} autoComplete="rut" autoCorrect="off" />
-                                                            </FormControl>
-                                                            <FormMessage />
-                                                        </FormItem>
-                                                    )}
-                                                />
+                                            <div className='flex items-center gap-3'>
+                                                <div className='flex flex-col w-full'>
+
+                                                    <Label className="py-1 mb-2">ROL</Label>
+                                                    <Input placeholder="ROL" autoComplete="rol" autoCorrect="off" readOnly />
+
+                                                </div>
+
+                                                <div className='flex flex-col w-full'>
+                                                    <FormField control={formNewUser.control} name="rol"
+                                                        render={({ field }) => (
+                                                            <FormItem>
+                                                                <FormLabel className="py-1 mb-2">Cambiar ROL</FormLabel>
+                                                                <FormControl>
+                                                                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                                                        <SelectTrigger className="w-full">
+                                                                            <SelectValue placeholder="Seleccionar ROL" />
+                                                                        </SelectTrigger>
+                                                                        <SelectContent>
+                                                                            <SelectGroup>
+                                                                                <SelectLabel>ROLES</SelectLabel>
+                                                                                <SelectItem value="Administrador">Administrador</SelectItem>
+                                                                                <SelectItem value="Doctor">Doctor</SelectItem>
+                                                                                <SelectItem value="Recepcionista">Recepcionista</SelectItem>
+                                                                            </SelectGroup>
+                                                                        </SelectContent>
+                                                                    </Select>
+                                                                </FormControl>
+                                                                <FormMessage />
+                                                            </FormItem>
+                                                        )}
+                                                    />
+                                                    
+                                                    {/*<input type="text"  value={selectedUser?.correo} placeholder='Correo' className='border-[1px] rounded-md p-2' />*/}
+                                                </div>
                                             </div>
-
-                                            <div className='flex flex-col w-full'>
-                                                <FormField control={formOldUser.control} name="correo"
-                                                    render={({ field }) => (
-                                                        <FormItem>
-                                                            <FormLabel>Correo</FormLabel>
-                                                            <FormControl>
-                                                                <Input placeholder="Correo" {...field} autoComplete="correo" autoCorrect="off" />
-                                                            </FormControl>
-                                                            <FormMessage />
-                                                        </FormItem>
-                                                    )}
-                                                />
-                                            </div>
-                                        </div>
-                                        <div className='flex items-center gap-3'>
-                                            <div className='flex flex-col w-full'>
-
-                                                <Label className="py-1 mb-2">ROL</Label>
-                                                <Input placeholder="ROL" autoComplete="rol" autoCorrect="off" readOnly />
-
-                                            </div>
-
-                                            <div className='flex flex-col w-full'>
-                                                <FormField control={formOldUser.control} name="rol"
-                                                    render={({ field }) => (
-                                                        <FormItem>
-                                                            <FormLabel className="py-1 mb-2">Cambiar ROL</FormLabel>
-                                                            <FormControl>
-                                                                <Select onValueChange={field.onChange} {...field} autoComplete="rol">
-                                                                    <SelectTrigger className="w-full">
-                                                                        <SelectValue placeholder="Seleccionar ROL" />
-                                                                    </SelectTrigger>
-                                                                    <SelectContent>
-                                                                        <SelectGroup>
-                                                                            <SelectLabel>ROLES</SelectLabel>
-                                                                            <SelectItem value="Administrador">Administrador</SelectItem>
-                                                                            <SelectItem value="Doctor">Doctor</SelectItem>
-                                                                            <SelectItem value="Recepcionista">Recepcionista</SelectItem>
-                                                                        </SelectGroup>
-                                                                    </SelectContent>
-                                                                </Select>
-                                                            </FormControl>
-                                                            <FormMessage />
-                                                        </FormItem>
-                                                    )}
-                                                />
-
-
-                                                {/*<input type="text"  value={selectedUser?.correo} placeholder='Correo' className='border-[1px] rounded-md p-2' />*/}
-                                            </div>
-                                        </div>
-
-
-                                        {isNewUser &&
 
                                             <div className={`items-center gap-3 flex ${isNewUser ? '' : 'opacity-0 h-0'}`}>
                                                 <div className='flex flex-col w-full'>
@@ -481,41 +478,182 @@ export default function Usuarios() {
                                                     />
                                                 </div>
                                             </div>
-                                        }
 
-                                    </div>
-
+                                        </div>
 
 
-                                </CardContent>
-                                <CardFooter className="flex justify-end">
-                                    <Button type="submit" className={`relative overflow-hidden w-48 h-10 bg-red-500 border-gray-100 rounded-lg shadow-inner group ${isNewUser ? ' text-black' : 'text-gray-600'}`}>
-                                        <span className={`absolute top-0 left-0 h-0 transition-all duration-200 border-t-2 border-gray-800 ${isNewUser ? 'w-48' : 'w-0'} ease`}></span>
-                                        <span className={`absolute bottom-0 right-0 h-0 transition-all duration-200 border-b-2 border-gray-800 ${isNewUser ? 'w-48' : 'w-0'} ease`}></span>
-                                        <span className={`absolute top-0 left-0 w-48 transition-all duration-300 delay-200 bg-gray-800 ${isNewUser ? 'h-10' : 'h-0'} ease`}></span>
-                                        <span className={`absolute bottom-0 left-0 w-48 transition-all duration-300 delay-200 bg-gray-800 ${isNewUser ? 'h-10' : 'h-0'} ease`}></span>
-                                        <span className={`absolute transition-all inset-0 w-48 duration-300 delay-300 bg-zinc-800 ${isNewUser ? 'h-10' : 'h-0'}`}></span>
-                                        <span className={`relative transition-all duration-300 delay-200 ${isNewUser ? 'text-white' : 'text-slate-50'} ease`}>
-                                            <div className='flex justify-center gap-3'>
-                                                {isNewUser ?
-                                                    <>
 
-                                                        Agregar
-                                                    </>
+                                    </CardContent>
+                                    <CardFooter className="flex justify-end">
+                                        <Button type="submit" className={`relative overflow-hidden w-48 h-10 bg-red-500 border-gray-100 rounded-lg shadow-inner group ${isNewUser ? ' text-black' : 'text-gray-600'}`}>
+                                            <span className={`absolute top-0 left-0 h-0 transition-all duration-200 border-t-2 border-gray-800 ${isNewUser ? 'w-48' : 'w-0'} ease`}></span>
+                                            <span className={`absolute bottom-0 right-0 h-0 transition-all duration-200 border-b-2 border-gray-800 ${isNewUser ? 'w-48' : 'w-0'} ease`}></span>
+                                            <span className={`absolute top-0 left-0 w-48 transition-all duration-300 delay-200 bg-gray-800 ${isNewUser ? 'h-10' : 'h-0'} ease`}></span>
+                                            <span className={`absolute bottom-0 left-0 w-48 transition-all duration-300 delay-200 bg-gray-800 ${isNewUser ? 'h-10' : 'h-0'} ease`}></span>
+                                            <span className={`absolute transition-all inset-0 w-48 duration-300 delay-300 bg-zinc-800 ${isNewUser ? 'h-10' : 'h-0'}`}></span>
+                                            <span className={`relative transition-all duration-300 delay-200 ${isNewUser ? 'text-white' : 'text-slate-50'} ease`}>
+                                                <div className='flex justify-center gap-3'>
+                                                    {isNewUser ?
+                                                        <>
 
-                                                    :
-                                                    <>
+                                                            Agregar
+                                                        </>
 
-                                                        Actualizar
-                                                    </>
+                                                        :
+                                                        <>
 
-                                                }
+                                                            Actualizar
+                                                        </>
+
+                                                    }
+                                                </div>
+                                            </span>
+                                        </Button>
+                                    </CardFooter>
+                                </form>
+                            </Form>
+                        }
+                        {isNewUser === false &&
+                            <Form {...formOldUser}>
+                                <form onSubmit={formOldUser.handleSubmit(handleUpdateUser)}>
+                                    <CardContent>
+                                        <div className='flex flex-col gap-3 '>
+                                            {/*<div className='w-full'>
+                                        <div className='p-6 w-full border-[1px] rounded-md'>
+                                            detalles
+                                        </div>
+                                        </div>*/}
+                                            <div className='flex items-center gap-3'>
+                                                <div className='flex flex-col w-full'>
+                                                    <FormField control={formOldUser.control} name="nombre"
+                                                        render={({ field }) => (
+                                                            <FormItem>
+                                                                <FormLabel>Nombre</FormLabel>
+                                                                <FormControl>
+                                                                    <Input placeholder="Nombre" {...field}  autoComplete="nombre" autoCorrect="off" />
+                                                                </FormControl>
+                                                                <FormMessage />
+                                                            </FormItem>
+                                                        )}
+                                                    />
+                                                </div>
+
+                                                <div className='flex flex-col w-full'>
+                                                    <FormField control={formOldUser.control} name="apellido"
+                                                        render={({ field }) => (
+                                                            <FormItem>
+                                                                <FormLabel>Apellido</FormLabel>
+                                                                <FormControl>
+                                                                    <Input placeholder="Apellido" {...field} autoComplete="apellido" autoCorrect="off" />
+                                                                </FormControl>
+                                                                <FormMessage />
+                                                            </FormItem>
+                                                        )}
+                                                    />
+                                                </div>
                                             </div>
-                                        </span>
-                                    </Button>
-                                </CardFooter>
-                            </form>
-                        </Form>
+                                            <div className='flex items-center gap-3'>
+                                                <div className='flex flex-col w-full'>
+                                                    <FormField control={formOldUser.control} name="rut"
+                                                        render={({ field }) => (
+                                                            <FormItem>
+                                                                <FormLabel>RUT</FormLabel>
+                                                                <FormControl>
+                                                                    <Input placeholder="RUT" {...field} autoComplete="rut" autoCorrect="off" />
+                                                                </FormControl>
+                                                                <FormMessage />
+                                                            </FormItem>
+                                                        )}
+                                                    />
+                                                </div>
+
+                                                <div className='flex flex-col w-full'>
+                                                    <FormField control={formOldUser.control} name="correo"
+                                                        render={({ field }) => (
+                                                            <FormItem>
+                                                                <FormLabel>Correo</FormLabel>
+                                                                <FormControl>
+                                                                    <Input placeholder="Correo" {...field} autoComplete="correo" autoCorrect="off" />
+                                                                </FormControl>
+                                                                <FormMessage />
+                                                            </FormItem>
+                                                        )}
+                                                    />
+                                                </div>
+                                            </div>
+                                            <div className='flex items-center gap-3'>
+                                                <div className='flex flex-col w-full'>
+
+                                                    <Label className="py-1 mb-2">ROL</Label>
+                                                    <Input placeholder="ROL" readOnly />
+
+                                                </div>
+
+                                                <div className='flex flex-col w-full'>
+                                                    <FormField control={formOldUser.control} name="rol"
+                                                        render={({ field }) => (
+                                                            <FormItem>
+                                                                <FormLabel className="py-1 mb-2">Cambiar ROL</FormLabel>
+                                                                <FormControl>
+                                                                    <Select onValueChange={field.onChange} {...field}>
+                                                                        <SelectTrigger className="w-full">
+                                                                            <SelectValue placeholder="Seleccionar ROL" />
+                                                                        </SelectTrigger>
+                                                                        <SelectContent>
+                                                                            <SelectGroup>
+                                                                                <SelectLabel>ROLES</SelectLabel>
+                                                                                <SelectItem value="Administrador">Administrador</SelectItem>
+                                                                                <SelectItem value="Doctor">Doctor</SelectItem>
+                                                                                <SelectItem value="Recepcionista">Recepcionista</SelectItem>
+                                                                                <SelectItem value="Tecnico">Técnico</SelectItem>
+                                                                            </SelectGroup>
+                                                                        </SelectContent>
+                                                                    </Select>
+                                                                </FormControl>
+                                                                <FormMessage />
+                                                            </FormItem>
+                                                        )}
+                                                    />
+
+
+                                                    {/*<input type="text"  value={selectedUser?.correo} placeholder='Correo' className='border-[1px] rounded-md p-2' />*/}
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+
+
+                                    </CardContent>
+                                    <CardFooter className="flex justify-end">
+                                        <Button type="submit" className={`relative overflow-hidden w-48 h-10 bg-red-500 border-gray-100 rounded-lg shadow-inner group ${isNewUser ? ' text-black' : 'text-gray-600'}`}>
+                                            <span className={`absolute top-0 left-0 h-0 transition-all duration-200 border-t-2 border-gray-800 ${isNewUser ? 'w-48' : 'w-0'} ease`}></span>
+                                            <span className={`absolute bottom-0 right-0 h-0 transition-all duration-200 border-b-2 border-gray-800 ${isNewUser ? 'w-48' : 'w-0'} ease`}></span>
+                                            <span className={`absolute top-0 left-0 w-48 transition-all duration-300 delay-200 bg-gray-800 ${isNewUser ? 'h-10' : 'h-0'} ease`}></span>
+                                            <span className={`absolute bottom-0 left-0 w-48 transition-all duration-300 delay-200 bg-gray-800 ${isNewUser ? 'h-10' : 'h-0'} ease`}></span>
+                                            <span className={`absolute transition-all inset-0 w-48 duration-300 delay-300 bg-zinc-800 ${isNewUser ? 'h-10' : 'h-0'}`}></span>
+                                            <span className={`relative transition-all duration-300 delay-200 ${isNewUser ? 'text-white' : 'text-slate-50'} ease`}>
+                                                <div className='flex justify-center gap-3'>
+                                                    {isNewUser ?
+                                                        <>
+
+                                                            Agregar
+                                                        </>
+
+                                                        :
+                                                        <>
+
+                                                            Actualizar
+                                                        </>
+
+                                                    }
+                                                </div>
+                                            </span>
+                                        </Button>
+                                    </CardFooter>
+                                </form>
+                            </Form>
+                        }
 
                     </Card>
                 </div>
