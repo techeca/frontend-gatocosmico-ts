@@ -34,6 +34,7 @@ import {
     SelectValue,
 } from "@/components/ui/select"
 import { motion } from 'framer-motion';
+import { toast } from "sonner";
 
 interface User {
     id?: string;
@@ -43,7 +44,8 @@ interface User {
     rut: string;
     password?: string;
     rol: {
-        nombre: string;
+        id?: string;
+        nombre?: string;
     }
 }
 
@@ -52,7 +54,7 @@ const formSchemaOldUser = z.object({
     apellido: z.string().min(4),
     rut: z.string().min(4),
     correo: z.string().email(),
-    rol: z.string().min(4)
+    rol: z.string()
 });
 
 const formSchemaNewUser = z.object({
@@ -71,7 +73,7 @@ const formSchemaNewUser = z.object({
 
 export default function Usuarios() {
     const [users, setUsers] = useState<User[]>([]);
-    const [selectedUser, setSelectedUser] = useState<User>({ nombre: '', apellido: '', correo: '', rut: '', rol: { nombre: '' } });
+    const [selectedUser, setSelectedUser] = useState<User>({ nombre: '', apellido: '', correo: '', rut: '', rol: { id: '', nombre: '' } });
     const [isNewUser, setIsNewUser] = useState(true);
     const [repassword, setRepassword] = useState('');
 
@@ -93,7 +95,7 @@ export default function Usuarios() {
             apellido: selectedUser.apellido,
             correo: selectedUser.correo,
             rut: selectedUser.rut,
-            rol: selectedUser.rol.nombre,
+            rol: selectedUser.rol.id,
         },
     });
 
@@ -118,10 +120,9 @@ export default function Usuarios() {
             apellido: user.apellido,
             rut: user.rut,
             correo: user.correo,
-            rol: user.rol.nombre
+            rol: user.rol.id?.toString()
         })
         console.log(user);
-
     }
 
     function newUser() {
@@ -144,7 +145,7 @@ export default function Usuarios() {
             rut: values.rut,
             password: values.password,
             rol: {
-                nombre: values.rol
+                id: values.rol
             }
         }
 
@@ -173,12 +174,13 @@ export default function Usuarios() {
 
     async function handleUpdateUser(values: z.infer<typeof formSchemaOldUser>) {
         const usuario: User = {
+            id: selectedUser.id,
             nombre: values.nombre,
             apellido: values.apellido,
             rut: values.rut,
             correo: values.correo,
             rol: {
-                nombre: values.rol
+                id: values.rol
             }
         };
 
@@ -209,6 +211,20 @@ export default function Usuarios() {
 
             // Actualiza el estado de users con la copia
             setUsers(usersCopy);
+
+            toast(`Datos de usuario actualizados`, {
+                action: {
+                    label: "Cerrar",
+                    onClick: () => console.log("Undo"),
+                },
+            })
+        }else{
+            toast(`Error al actualizar datos`, {
+                action: {
+                    label: "Cerrar",
+                    onClick: () => console.log("Undo"),
+                },
+            })
         }
     }
 
@@ -359,7 +375,7 @@ export default function Usuarios() {
                                                     <FormField control={formNewUser.control} name="nombre"
                                                         render={({ field }) => (
                                                             <FormItem>
-                                                                <FormLabel>Email</FormLabel>
+                                                                <FormLabel>Nombre</FormLabel>
                                                                 <FormControl>
                                                                     <Input placeholder="Nombre" {...field} autoComplete="nombre" autoCorrect="off" />
                                                                 </FormControl>
@@ -426,7 +442,7 @@ export default function Usuarios() {
                                                             <FormItem>
                                                                 <FormLabel className="py-1 mb-2">Cambiar ROL</FormLabel>
                                                                 <FormControl>
-                                                                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                                                    <Select onValueChange={field.onChange}>
                                                                         <SelectTrigger className="w-full">
                                                                             <SelectValue placeholder="Seleccionar ROL" />
                                                                         </SelectTrigger>
@@ -444,7 +460,7 @@ export default function Usuarios() {
                                                             </FormItem>
                                                         )}
                                                     />
-                                                    
+
                                                     {/*<input type="text"  value={selectedUser?.correo} placeholder='Correo' className='border-[1px] rounded-md p-2' />*/}
                                                 </div>
                                             </div>
@@ -480,8 +496,6 @@ export default function Usuarios() {
                                             </div>
 
                                         </div>
-
-
 
                                     </CardContent>
                                     <CardFooter className="flex justify-end">
@@ -530,7 +544,7 @@ export default function Usuarios() {
                                                             <FormItem>
                                                                 <FormLabel>Nombre</FormLabel>
                                                                 <FormControl>
-                                                                    <Input placeholder="Nombre" {...field}  autoComplete="nombre" autoCorrect="off" />
+                                                                    <Input placeholder="Nombre" {...field} autoComplete="nombre" autoCorrect="off" />
                                                                 </FormControl>
                                                                 <FormMessage />
                                                             </FormItem>
@@ -595,17 +609,17 @@ export default function Usuarios() {
                                                             <FormItem>
                                                                 <FormLabel className="py-1 mb-2">Cambiar ROL</FormLabel>
                                                                 <FormControl>
-                                                                    <Select onValueChange={field.onChange} {...field}>
+                                                                    <Select onValueChange={field.onChange} defaultValue={field.value} {...field}>
                                                                         <SelectTrigger className="w-full">
                                                                             <SelectValue placeholder="Seleccionar ROL" />
                                                                         </SelectTrigger>
                                                                         <SelectContent>
                                                                             <SelectGroup>
                                                                                 <SelectLabel>ROLES</SelectLabel>
-                                                                                <SelectItem value="Administrador">Administrador</SelectItem>
-                                                                                <SelectItem value="Doctor">Doctor</SelectItem>
-                                                                                <SelectItem value="Recepcionista">Recepcionista</SelectItem>
-                                                                                <SelectItem value="Tecnico">Técnico</SelectItem>
+                                                                                <SelectItem value="1">Administrador</SelectItem>
+                                                                                <SelectItem value="2">Doctor</SelectItem>
+                                                                                <SelectItem value="3">Recepcionista</SelectItem>
+                                                                                <SelectItem value="4">Técnico</SelectItem>
                                                                             </SelectGroup>
                                                                         </SelectContent>
                                                                     </Select>
@@ -614,16 +628,11 @@ export default function Usuarios() {
                                                             </FormItem>
                                                         )}
                                                     />
-
-
                                                     {/*<input type="text"  value={selectedUser?.correo} placeholder='Correo' className='border-[1px] rounded-md p-2' />*/}
                                                 </div>
                                             </div>
 
                                         </div>
-
-
-
                                     </CardContent>
                                     <CardFooter className="flex justify-end">
                                         <Button type="submit" className={`relative overflow-hidden w-48 h-10 bg-red-500 border-gray-100 rounded-lg shadow-inner group ${isNewUser ? ' text-black' : 'text-gray-600'}`}>
