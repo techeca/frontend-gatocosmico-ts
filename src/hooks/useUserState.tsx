@@ -9,12 +9,28 @@ export function useUserState() {
     }
   
     const { user } = context;
-    const [isUser, setIsUser] = useState(!!user);
-
-    useEffect(() => {
+    const rutas = user?.urls
+    
+    //const [isUser, setIsUser] = useState(!!user);
+    /*useEffect(() => {
         setIsUser(!!user);
         console.log('useEffect useUserState');
-    }, [user]);
+    }, [user]);*/
 
-    return isUser;
+    return {
+      all: user,
+      routes: rutas,
+      user:{
+        profile:{
+          nombre:user?.nombre, 
+          apellido:user?.apellido, 
+          rut: user?.rut
+        },
+        account:{
+          correo: user?.correo, 
+          nombreFantasia: user?.clinica.nombreFantasia, 
+          rol: user?.rol
+        }
+      }
+    };
 }

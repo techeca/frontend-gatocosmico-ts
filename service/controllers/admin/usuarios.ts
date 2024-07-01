@@ -27,16 +27,19 @@ export async function agregarUsuario(req: Request & { session:MySession}, res:Re
         if (!req.session.usuario) {
             return res.status(400).send('No se ha podido obtener session');
         }
-        const {nombre, apellido, rut, correo, rol, password} = JSON.parse(req.body);
+        const {nombre, apellido, rut, correo, rol, password} = req.body;
         const dataAEnviar = {
             correo: correo,
             password: password,
             rut: rut,
             nombre: nombre,
             apellido: apellido,
-            idRol: rol,
+            idRol: rol.id,
             idClinica: req.session.usuario.clinica.id
         }
+
+        console.log(dataAEnviar);
+        
         
         const response = await fetch('http://localhost:3000/configuracion/createUsuario',
             {
@@ -76,6 +79,10 @@ export async function actualizarUsuario(req: Request & { session:MySession}, res
             idRol: rol.id,
             idClinica: req.session.usuario.clinica.id
         }
+        
+        console.log(dataAEnviar);
+        
+
         const response = await fetch('http://localhost:3000/configuracion/updateUsuarioClinica',
             {
                 method: 'PUT',
@@ -85,11 +92,14 @@ export async function actualizarUsuario(req: Request & { session:MySession}, res
                 body: JSON.stringify(dataAEnviar)
             })
 
+            console.log(response);
+            
+
             if (response.ok) {
                 const data = await response.json();
                 res.status(200).json(data);
             } else {
-                res.status(response.status).json({ error: 'Usuarios de clinica no encontrado' });
+                res.status(response.status).json({ error: 'Usuario de clinica no encontrado' });
             }
 
     } catch (error) {

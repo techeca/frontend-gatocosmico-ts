@@ -18,6 +18,7 @@ import { AvatarIcon, ExitIcon } from "@radix-ui/react-icons"
 import { useNavigate } from "react-router-dom"
 import { useContext } from "react"
 import { toast } from "sonner"
+import { useUserState } from "@/hooks/useUserState";
 
   const components: { title: string; href: string; description: string }[] = [
     {
@@ -117,12 +118,7 @@ import { toast } from "sonner"
   }
    
   export default function Navigation() {
-    const context = React.useContext(UserContext);
-
-    if (!context) {
-      throw new Error('Component must be wrapped with <UserContext.Provider>');
-    }
-    const { user } = context;
+    const { routes } = useUserState()
 
     return (
       <div className="sticky top-0 z-10 flex border-b-[1px] justify-center items-center p-2 px-6 backdrop-blur-md">
@@ -137,9 +133,9 @@ import { toast } from "sonner"
         </div>
         <NavigationMenu>
           <NavigationMenuList className="hidden sm:flex">
-            {user && 
+            {routes && 
               <NavigationMenuItem>
-                <NavigationMenuTrigger>{user.urls[0].name}</NavigationMenuTrigger>
+                <NavigationMenuTrigger>{routes[0].name}</NavigationMenuTrigger>
                 <NavigationMenuContent>
                   <ul className="grid gap-3 p-4 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
                     <li className="row-span-3">
@@ -158,7 +154,7 @@ import { toast } from "sonner"
                         </Link>
                       </NavigationMenuLink>
                     </li>
-                    {user.urls[0].urls.map((component, index) => (
+                    {routes[0].urls.map((component, index) => (
                       <ListItem key={component.title} to="/docs" title={component.title}>
                         Re-usable components built using Radix UI and Tailwind CSS.
                       </ListItem>  
@@ -167,12 +163,12 @@ import { toast } from "sonner"
                 </NavigationMenuContent>
               </NavigationMenuItem>
             }
-            {user && user.urls.length > 1 && 
+            {routes && routes.length > 1 && 
               <NavigationMenuItem>
-                <NavigationMenuTrigger>{user.urls[1].name}</NavigationMenuTrigger>
+                <NavigationMenuTrigger>{routes[1].name}</NavigationMenuTrigger>
                 <NavigationMenuContent>
                   <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
-                    {user.urls[1].urls.map((component, index) => (
+                    {routes[1].urls.map((component, index) => (
                       <ListItem
                       key={component.title}
                       title={component.title}
@@ -198,7 +194,7 @@ import { toast } from "sonner"
         </NavigationMenu>
         <div className="flex gap-3">
           <ModeToggle />
-          {user &&
+          {routes &&
           <>
             <ProfileMenu />
             <ExitMenuBtn />

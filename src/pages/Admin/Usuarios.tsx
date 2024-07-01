@@ -35,6 +35,8 @@ import {
 } from "@/components/ui/select"
 import { motion } from 'framer-motion';
 import { toast } from "sonner";
+import { Switch } from "@/components/ui/switch";
+import { ContextMenu, ContextMenuCheckboxItem, ContextMenuContent, ContextMenuItem, ContextMenuLabel, ContextMenuRadioGroup, ContextMenuRadioItem, ContextMenuSeparator, ContextMenuShortcut, ContextMenuSub, ContextMenuSubContent, ContextMenuSubTrigger, ContextMenuTrigger } from "@/components/ui/context-menu";
 
 interface User {
     id?: string;
@@ -64,7 +66,7 @@ const formSchemaNewUser = z.object({
     correo: z.string().email(),
     password: z.string().min(6),
     repassword: z.string().min(6),
-    rol: z.string().min(4)
+    rol: z.string()
 
 }).refine(data => data.password === data.repassword, {
     message: 'Las contraseñas no coinciden',
@@ -149,6 +151,9 @@ export default function Usuarios() {
             }
         }
 
+        console.log(newUser);
+
+
         const response = await fetch('/admin/usuarios/crear', {
             method: 'POST',
             headers: {
@@ -168,6 +173,13 @@ export default function Usuarios() {
             usersCopy.push(newUser);
             // Actualiza el estado de users con la copia
             setUsers(usersCopy);
+
+            toast(`Usuario Creado`, {
+                action: {
+                    label: "Cerrar",
+                    onClick: () => console.log("Undo"),
+                },
+            })
         }
 
     }
@@ -218,7 +230,7 @@ export default function Usuarios() {
                     onClick: () => console.log("Undo"),
                 },
             })
-        }else{
+        } else {
             toast(`Error al actualizar datos`, {
                 action: {
                     label: "Cerrar",
@@ -226,25 +238,6 @@ export default function Usuarios() {
                 },
             })
         }
-    }
-
-    function handleChangeNewUser() {
-
-        /*if (e.target.name === 'rol' && !isNewUser) {
-            setSelectedUser({
-                ...selectedUser,
-                rol: {
-                    id: e.target.value
-                }
-            })
-        } else {
-            console.log(selectedUser);
-            setSelectedUser({
-                ...selectedUser,
-                [e.target.name]: e.target.value
-            })
-        }*/
-
     }
 
     useEffect(() => {
@@ -263,7 +256,7 @@ export default function Usuarios() {
                 animate="visible"
                 custom={0.2}
             >
-                <Card className="">
+                <Card className="select-none">
                     <CardHeader>
                         <CardTitle>Lista de Usuario</CardTitle>
                         <CardDescription>Aquí puedes administrar todos los usuarios de tu sistema.</CardDescription>
@@ -291,55 +284,81 @@ export default function Usuarios() {
                             <tbody>
 
                                 {/*Lista de usuarios*/}
-                                {users.map(user =>
-                                    <tr key={user.rut} onClick={() => selectUser(user)} className='text-sm hover:bg-zinc-200/10 hover:cursor-pointer'>
-                                        <td className='font-semibold pl-2 flex items-center gap-2 py-2'>
-                                            <div className='border-[1px] rounded-full w-12 h-12 flex items-center justify-center bg-zinc-600/10'>{user.nombre.charAt(0).toUpperCase()}</div>
-                                            <div>
-                                                <p className='capitalize'>{user.nombre} {user.apellido}</p>
-                                                <p className='text-xs font-normal'>{user.correo}</p>
-                                            </div>
-                                        </td>
-                                        <td className='font-semibold'>{user.rol.nombre}</td>
-                                        <td className='flex items-center gap-2'>
-                                            <div className='w-3 h-3 bg-green-500 rounded-full'>
 
-                                            </div>
-                                            Habilitado
-                                        </td>
-                                    </tr>
+
+
+                                {users.map(user =>
+                                    <ContextMenu key={user.id}>
+                                        <tr onClick={() => selectUser(user)} className='text-sm hover:bg-zinc-200/10 hover:cursor-pointer'>
+                                            <td className='font-semibold flex items-center gap-2 py-2'>
+                                                <ContextMenuTrigger className="flex gap-2">
+                                                    <div className='border-[1px] rounded-full min-w-12 max-w-12 min-h-12 max-h-12 flex items-center justify-center bg-zinc-600/10'>{user.nombre.charAt(0).toUpperCase()}</div>
+                                                    <div>
+                                                        <p className='capitalize'>{user.nombre} {user.apellido}</p>
+                                                        <p className='text-xs font-normal'>{user.correo}</p>
+                                                    </div>
+                                                </ContextMenuTrigger>
+                                            </td>
+                                            <td className='font-semibold'>{user.rol.nombre}</td>
+                                            <td className='flex items-center gap-2'>
+                                                <div className='w-3 h-3 bg-green-500 rounded-full'>
+
+                                                </div>
+                                                Habilitado
+                                            </td>
+                                        </tr>
+
+                                        <ContextMenuContent className="w-64">
+                                            <ContextMenuItem inset>
+                                                Cambiar imagen
+                                                <ContextMenuShortcut>⌘P</ContextMenuShortcut>
+                                            </ContextMenuItem>
+                                            <ContextMenuItem inset>
+                                                Eliminar
+                                                <ContextMenuShortcut>⌘D</ContextMenuShortcut>
+                                            </ContextMenuItem>
+                                            <ContextMenuItem inset>
+                                                Deshabilitar
+                                                <ContextMenuShortcut>⌘S</ContextMenuShortcut>
+                                            </ContextMenuItem>
+                                            <ContextMenuItem inset disabled>
+                                                Exportar
+                                                <ContextMenuShortcut>⌘E</ContextMenuShortcut>
+                                            </ContextMenuItem>
+                                        </ContextMenuContent>
+                                    </ContextMenu>
+
                                 )}
 
                             </tbody>
                         </table>
 
-                        <div className='flex justify-end p-0 border-[0px] rounded-md gap-3'>
-
-                            <Pagination>
-                                <PaginationContent>
-                                    <PaginationItem>
-                                        <PaginationPrevious href="#" />
-                                    </PaginationItem>
-                                    <PaginationItem>
-                                        <PaginationLink href="#">1</PaginationLink>
-                                    </PaginationItem>
-                                    <PaginationItem>
-                                        <PaginationLink href="#" isActive>
-                                            2
-                                        </PaginationLink>
-                                    </PaginationItem>
-                                    <PaginationItem>
-                                        <PaginationLink href="/Home">3</PaginationLink>
-                                    </PaginationItem>
-                                    {/*<PaginationItem>
-                                            <PaginationEllipsis />
-                                        </PaginationItem>*/}
-                                    <PaginationItem>
-                                        <PaginationNext href="#" />
-                                    </PaginationItem>
-                                </PaginationContent>
-                            </Pagination>
-                        </div>
+                        {
+                            /* <div className='flex justify-end p-0 border-[0px] rounded-md gap-3'>
+    
+                                <Pagination>
+                                    <PaginationContent>
+                                        <PaginationItem>
+                                            <PaginationPrevious href="#" />
+                                        </PaginationItem>
+                                        <PaginationItem>
+                                            <PaginationLink href="#">1</PaginationLink>
+                                        </PaginationItem>
+                                        <PaginationItem>
+                                            <PaginationLink href="#" isActive>
+                                                2
+                                            </PaginationLink>
+                                        </PaginationItem>
+                                        <PaginationItem>
+                                            <PaginationLink href="/Home">3</PaginationLink>
+                                        </PaginationItem>
+                                        <PaginationItem>
+                                            <PaginationNext href="#" />
+                                        </PaginationItem>
+                                    </PaginationContent>
+                                </Pagination>
+                            </div>*/
+                        }
 
                     </CardContent>
                 </Card>
@@ -353,15 +372,15 @@ export default function Usuarios() {
                 custom={0.3}
             >
                 <div className=''>
-                    <Card className={``}>
+                    <Card className={`select-none`}>
 
                         <CardHeader>
                             <CardTitle>Detalles {selectedUser && `${selectedUser.nombre} ${selectedUser.apellido}`}</CardTitle>
                             <CardDescription>Administra tus datos personales.</CardDescription>
                         </CardHeader>
 
-                        {isNewUser === true &&
-                            <Form {...formNewUser}>
+                        <div className={`transition-opacity duration-300 ${isNewUser ? 'opacity-100' : 'absolute opacity-0 pointer-events-none'}`}>
+                        <Form {...formNewUser}>
                                 <form onSubmit={formNewUser.handleSubmit(handleNewUser)}>
                                     <CardContent>
                                         <div className='flex flex-col gap-3 '>
@@ -430,13 +449,6 @@ export default function Usuarios() {
                                             </div>
                                             <div className='flex items-center gap-3'>
                                                 <div className='flex flex-col w-full'>
-
-                                                    <Label className="py-1 mb-2">ROL</Label>
-                                                    <Input placeholder="ROL" autoComplete="rol" autoCorrect="off" readOnly />
-
-                                                </div>
-
-                                                <div className='flex flex-col w-full'>
                                                     <FormField control={formNewUser.control} name="rol"
                                                         render={({ field }) => (
                                                             <FormItem>
@@ -449,9 +461,10 @@ export default function Usuarios() {
                                                                         <SelectContent>
                                                                             <SelectGroup>
                                                                                 <SelectLabel>ROLES</SelectLabel>
-                                                                                <SelectItem value="Administrador">Administrador</SelectItem>
-                                                                                <SelectItem value="Doctor">Doctor</SelectItem>
-                                                                                <SelectItem value="Recepcionista">Recepcionista</SelectItem>
+                                                                                <SelectItem value="1">Administrador</SelectItem>
+                                                                                <SelectItem value="2">Doctor</SelectItem>
+                                                                                <SelectItem value="3">Recepcionista</SelectItem>
+                                                                                <SelectItem value="4">Técnico</SelectItem>
                                                                             </SelectGroup>
                                                                         </SelectContent>
                                                                     </Select>
@@ -462,6 +475,15 @@ export default function Usuarios() {
                                                     />
 
                                                     {/*<input type="text"  value={selectedUser?.correo} placeholder='Correo' className='border-[1px] rounded-md p-2' />*/}
+                                                </div>
+                                                <div className='flex flex-col w-full'>
+
+                                                    <Label className="py-1 mb-2">Estado</Label>
+                                                    <div className="flex items-center space-x-2">
+                                                        <Label htmlFor="estado">Habilitado</Label>
+                                                        <Switch defaultChecked id="estado" />
+                                                    </div>
+
                                                 </div>
                                             </div>
 
@@ -526,9 +548,10 @@ export default function Usuarios() {
                                     </CardFooter>
                                 </form>
                             </Form>
-                        }
-                        {isNewUser === false &&
-                            <Form {...formOldUser}>
+                        </div>
+
+                        <div className={`transition-opacity duration-300  ${!isNewUser ? 'opacity-100' : 'absolute opacity-0 pointer-events-none'}`}>
+                        <Form {...formOldUser}>
                                 <form onSubmit={formOldUser.handleSubmit(handleUpdateUser)}>
                                     <CardContent>
                                         <div className='flex flex-col gap-3 '>
@@ -597,17 +620,10 @@ export default function Usuarios() {
                                             </div>
                                             <div className='flex items-center gap-3'>
                                                 <div className='flex flex-col w-full'>
-
-                                                    <Label className="py-1 mb-2">ROL</Label>
-                                                    <Input placeholder="ROL" readOnly />
-
-                                                </div>
-
-                                                <div className='flex flex-col w-full'>
                                                     <FormField control={formOldUser.control} name="rol"
                                                         render={({ field }) => (
                                                             <FormItem>
-                                                                <FormLabel className="py-1 mb-2">Cambiar ROL</FormLabel>
+                                                                <FormLabel className="py-1 mb-2">ROL</FormLabel>
                                                                 <FormControl>
                                                                     <Select onValueChange={field.onChange} defaultValue={field.value} {...field}>
                                                                         <SelectTrigger className="w-full">
@@ -629,6 +645,16 @@ export default function Usuarios() {
                                                         )}
                                                     />
                                                     {/*<input type="text"  value={selectedUser?.correo} placeholder='Correo' className='border-[1px] rounded-md p-2' />*/}
+                                                </div>
+
+                                                <div className='flex flex-col w-full'>
+
+                                                    <Label className="py-1 mb-2">Estado</Label>
+                                                    <div className="flex items-center space-x-2">
+                                                        <Label htmlFor="estado">Habilitado</Label>
+                                                        <Switch defaultChecked id="estado" />
+                                                    </div>
+
                                                 </div>
                                             </div>
 
@@ -662,7 +688,7 @@ export default function Usuarios() {
                                     </CardFooter>
                                 </form>
                             </Form>
-                        }
+                        </div>
 
                     </Card>
                 </div>
