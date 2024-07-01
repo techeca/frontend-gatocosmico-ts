@@ -31,7 +31,7 @@ async function createServer() {
   app.use(cookieParser());
   app.use(sessionMiddleware);
   app.use(authorization);
-  
+
   //solicitudes públicas
   app.post('/login', authentication)
   app.post('/profile', (req, res) => {
@@ -52,10 +52,25 @@ async function createServer() {
 
   app.use('*', async (req, res, next) => renderSSR(req, res, next, vite, __dirname));
 
-  app.listen(PORT, () => {
+  const server = app.listen(PORT, () => {
     console.log(`URL: http://localhost:${PORT}`);
     console.log(`HEALTH: http://localhost:${PORT}/health`);
-});
+  });
+
+    // Manejo de cierre del servidor
+    const handleShutdown = () => {
+      console.log('Apagando el servidor...');
+      server.close(() => {
+        console.log('Servidor apagado correctamente.');
+        process.exit(0);
+      });
+    };
+  
+    // Manejar señales de terminación (SIGINT: Ctrl+C, SIGTERM: kill)
+    process.on('SIGINT', handleShutdown);
+    process.on('SIGTERM', handleShutdown);
+  
+    return server;
 }
 
 createServer().catch(error => {

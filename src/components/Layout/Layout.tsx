@@ -13,7 +13,7 @@ export default function Layout({ children }: LayoutProps) {
 
     return(
         isLoading &&
-        <div className="flex flex-col h-screen">
+        <div className="flex flex-col h-screen backgroundDots">
             <Navigation />
             <main className="flex-grow flex items-center justify-center">
                 {children}
