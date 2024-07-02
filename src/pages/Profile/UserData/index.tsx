@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button"
 import { toast } from "sonner";
 import { generateDate } from "@/lib/utils"
+import { useUserState } from "@/hooks/useUserState";
 
 interface Profile {
     nombre?: string;
@@ -14,7 +15,8 @@ interface Profile {
     rut?: string;
 }
 
-export default function UserData({ nombre, apellido, rut }: Profile) {
+export default function UserData() {
+    const { user } = useUserState();
     const formSchemaProfile = z.object({
         nombre: z.string().min(4),
         apellido: z.string().min(4),
@@ -23,9 +25,9 @@ export default function UserData({ nombre, apellido, rut }: Profile) {
     const formProfile = useForm<z.infer<typeof formSchemaProfile>>({
         resolver: zodResolver(formSchemaProfile),
         defaultValues: {
-            nombre: nombre || "",
-            apellido: apellido || "",
-            rut: rut || "",
+            nombre: user.profile.nombre || "",
+            apellido: user.profile.apellido || "",
+            rut: user.profile.rut || "",
         },
     });
 
@@ -45,8 +47,11 @@ export default function UserData({ nombre, apellido, rut }: Profile) {
                 body: JSON.stringify(profile),
             });
 
-            //tomar diferentes códigos
             if (response.ok) {
+                const data = await response.json()
+                console.log(data);
+                user.update.profile(data);
+
                 toast(`Perfil Actualizado`, {
                     description: generateDate(),
                     action: {
@@ -70,9 +75,9 @@ export default function UserData({ nombre, apellido, rut }: Profile) {
     function resetFormProfile(e: React.MouseEvent) {
         e.preventDefault()
         formProfile.reset({
-            nombre: nombre || "",
-            apellido: apellido || "",
-            rut: rut || "",
+            nombre: user.profile.nombre || "",
+            apellido: user.profile.apellido || "",
+            rut: user.profile.rut || "",
         });
     };
 
@@ -85,7 +90,7 @@ export default function UserData({ nombre, apellido, rut }: Profile) {
             <Form {...formProfile}>
                 <form className="" onSubmit={formProfile.handleSubmit(handleUpdateProfile)}>
                     <CardContent>
-                        <div className="grid w-full items-center gap-4">               
+                        <div className="grid w-full items-center gap-4">
 
                             <FormField control={formProfile.control} name="nombre"
                                 render={({ field }) => (

@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from 'react';
-import { UserContext, UserContextState } from '@/contexts/UserContext';
+import { UserContext, UserContextState, User } from '@/contexts/UserContext';
 
 export function useUserState() {
     const context = useContext<UserContextState | undefined>(UserContext);
@@ -8,7 +8,7 @@ export function useUserState() {
       throw new Error('useUserState must be used within a UserContextProvider');
     }
   
-    const { user } = context;
+    const { user, setUser } = context;
     const rutas = user?.urls
     
     //const [isUser, setIsUser] = useState(!!user);
@@ -16,6 +16,16 @@ export function useUserState() {
         setIsUser(!!user);
         console.log('useEffect useUserState');
     }, [user]);*/
+
+    function updateUserProfile(updatedProfile: Partial<User>){
+      setUser((prevUser) => {
+        if (!prevUser) return prevUser;
+        return {
+          ...prevUser,
+          ...updatedProfile,
+        };
+      });
+    }
 
     return {
       all: user,
@@ -30,7 +40,10 @@ export function useUserState() {
           correo: user?.correo, 
           nombreFantasia: user?.clinica.nombreFantasia, 
           rol: user?.rol
+        },
+        update:{
+          profile: updateUserProfile
         }
-      }
+      },
     };
 }

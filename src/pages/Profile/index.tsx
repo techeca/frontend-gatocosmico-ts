@@ -11,7 +11,6 @@ import { Label } from "@/components/ui/label"
 import { Switch } from "@/components/ui/switch"
 
 export default function Profile() {
-    const { user } = useUserState()
     const cardVariants = {
         hidden: { opacity: 0, y: -10 },
         visible: (delay: number) => ({
@@ -27,7 +26,7 @@ export default function Profile() {
         <div className="flex flex-col lg:flex-row gap-6 justify-center w-full p-6 flex-wrap">
 
             <motion.div className="w-full lg:w-5/12 h-fit" variants={cardVariants} initial="hidden" animate="visible" custom={0.2}>
-                <UserData nombre={user.profile.nombre} apellido={user.profile.apellido} rut={user.profile.rut} />
+                <UserData />
             </motion.div>
 
             <motion.div className="w-full lg:w-6/12 h-fit" variants={cardVariants} initial="hidden" animate="visible" custom={0.3}>
@@ -35,7 +34,7 @@ export default function Profile() {
             </motion.div>
 
             <motion.div className="w-full lg:w-5/12 h-fit" variants={cardVariants} initial="hidden" animate="visible" custom={0.4}>
-                <UserAcc correo={user.account.correo} nombreFantasia={user.account.nombreFantasia} rol={user.account.rol} />
+                <UserAcc />
             </motion.div>
 
             <motion.div

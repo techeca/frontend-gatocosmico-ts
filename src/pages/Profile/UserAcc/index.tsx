@@ -8,22 +8,21 @@ import { Button } from "@/components/ui/button"
 import { toast } from "sonner";
 import { generateDate } from "@/lib/utils"
 import { Label } from "@/components/ui/label";
+import { useUserState } from "@/hooks/useUserState";
 
 interface Account {
-    correo?: string;
-    nombreFantasia?: string;
-    rol?: string;
+    correo: string;
 }
 
-const formSchemaAccount = z.object({
-    correo: z.string().email()
-});
-
-export default function UserAcc({ correo, nombreFantasia, rol }: Account) {
+export default function UserAcc() {
+    const { user } = useUserState()
+    const formSchemaAccount = z.object({
+        correo: z.string().email()
+    });
     const formAccount = useForm<z.infer<typeof formSchemaAccount>>({
         resolver: zodResolver(formSchemaAccount),
         defaultValues: {
-            correo: correo || "",
+            correo: user.account.correo || "",
         },
     });
 
@@ -69,7 +68,7 @@ export default function UserAcc({ correo, nombreFantasia, rol }: Account) {
     function resetFormAccount(e: React.MouseEvent) {
         e.preventDefault()
         formAccount.reset({
-            correo: correo || "",
+            correo: user.account.correo || "",
         });
     }
 
@@ -99,11 +98,11 @@ export default function UserAcc({ correo, nombreFantasia, rol }: Account) {
                             />
                             <div className="flex flex-col space-y-1.5">
                                 <Label htmlFor="clinica">Clinica</Label>
-                                <Input id="clinica" placeholder="PetVet" className="bg-zinc-50 dark:bg-zinc-950" value={nombreFantasia} readOnly />
+                                <Input id="clinica" placeholder="PetVet" className="bg-zinc-50 dark:bg-zinc-950" value={user.account.nombreFantasia} readOnly />
                             </div>
                             <div className="flex flex-col space-y-1.5">
                                 <Label htmlFor="rol">Rol</Label>
-                                <Input id="rol" value={rol} className="bg-zinc-50 dark:bg-zinc-950" readOnly />
+                                <Input id="rol" value={user.account.rol?.nombre} className="bg-zinc-50 dark:bg-zinc-950" readOnly />
                             </div>
                         </div>
 
