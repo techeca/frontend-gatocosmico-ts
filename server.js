@@ -1,4 +1,4 @@
-import { renderSSR } from './service/utils/ssr';
+import { renderSSR } from './src/service/utils/ssr.js';
 import path from 'node:path';
 import process from 'node:process';
 import { fileURLToPath } from 'node:url';
@@ -8,12 +8,12 @@ import express from 'express';
 import 'dotenv/config';
 //import session from 'express-session';
 //import { create } from 'node:domain';
-import viteConfig from './service/config/viteConfig'
-import sessionMiddleware from './service/middlewares/session';
-import authentication from './service/middlewares/authentication';
-import { authorization } from './service/middlewares/authorization';
-import { usuarioRouter } from './service/routes/usuario/index';
-import { adminRouter } from './service/routes/admin/index';
+import viteConfig from './src/service/config/viteConfig'
+import sessionMiddleware from './src/service/middlewares/session';
+import authentication from './src/service/middlewares/authentication';
+import { authorization } from './src/service/middlewares/authorization';
+import { usuarioRouter } from './src/service/routes/usuario/index';
+import { adminRouter } from './src/service/routes/admin/index';
 import cookieParser from 'cookie-parser';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));

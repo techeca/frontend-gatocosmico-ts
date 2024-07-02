@@ -1,4 +1,4 @@
-import { renderSSR } from './service/utils/ssr.ts';
+import { renderSSR } from './src/service/utils/ssr.ts';
 import path from 'node:path';
 import process from 'node:process';
 import { fileURLToPath } from 'node:url';
@@ -8,17 +8,19 @@ import express from 'express';
 import 'dotenv/config';
 //import session from 'express-session';
 //import { create } from 'node:domain';
-import viteConfig from './service/config/viteConfig.ts'
-import sessionMiddleware from './service/middlewares/session.ts';
-import authentication from './service/middlewares/authentication.ts';
-import { authorization } from './service/middlewares/authorization.ts';
-import { usuarioRouter } from './service/routes/usuario/index.ts';
-import { adminRouter } from './service/routes/admin/index.ts';
+import viteConfig from './src/service/config/viteConfig.ts'
+import sessionMiddleware from './src/service/middlewares/session.ts';
+import authentication from './src/service/middlewares/authentication.ts';
+import { authorization } from './src/service/middlewares/authorization.ts';
+import { usuarioRouter } from './src/service/routes/usuario/index.ts';
+import { adminRouter } from './src/service/routes/admin/index.ts';
 import cookieParser from 'cookie-parser';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const PORT = process.env.PORT || 5180;
 //const TOKEN_SESSION = process.env.TOKEN_SESSION;
+console.log(PORT);
+
 
 async function createServer() {
   //Configuración de express y middlewares
