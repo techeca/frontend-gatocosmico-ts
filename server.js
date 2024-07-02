@@ -1,4 +1,4 @@
-import { renderSSR } from './service/utils/ssr.ts';
+import { renderSSR } from './service/utils/ssr';
 import path from 'node:path';
 import process from 'node:process';
 import { fileURLToPath } from 'node:url';
@@ -8,12 +8,12 @@ import express from 'express';
 import 'dotenv/config';
 //import session from 'express-session';
 //import { create } from 'node:domain';
-import viteConfig from './service/config/viteConfig.ts'
-import sessionMiddleware from './service/middlewares/session.ts';
-import authentication from './service/middlewares/authentication.ts';
-import { authorization } from './service/middlewares/authorization.ts';
-import { usuarioRouter } from './service/routes/usuario/index.ts';
-import { adminRouter } from './service/routes/admin/index.ts';
+import viteConfig from './service/config/viteConfig'
+import sessionMiddleware from './service/middlewares/session';
+import authentication from './service/middlewares/authentication';
+import { authorization } from './service/middlewares/authorization';
+import { usuarioRouter } from './service/routes/usuario/index';
+import { adminRouter } from './service/routes/admin/index';
 import cookieParser from 'cookie-parser';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -52,11 +52,20 @@ async function createServer() {
   app.use('/usuario', usuarioRouter);
   app.use('/admin', adminRouter)
 
-  app.use('*', async (req, res, next) => renderSSR(req, res, next, vite, __dirname));
+  app.use('*', async (req, res, next) => {
+    try {
+      const template = fs.readFileSync('./dist/client/index.html', 'utf-8');
+      const { render } = await import('./dist/server/entry-server.js');
+      const html = template.replace(`<!--outlet-->`, render);
+      res.status(200).set({ 'Content-Type': 'text/html' }).end(html);
+    } catch (error) {
+      res.status(500).end(error);
+    }
+  });
 
   const server = app.listen(PORT, () => {
-    console.log(`URL: http://localhost:${PORT}`);
-    console.log(`HEALTH: http://localhost:${PORT}/health`);
+    //console.log(`URL: http://localhost:${PORT}`);
+    //console.log(`HEALTH: http://localhost:${PORT}/health`);
   });
 
     // Manejo de cierre del servidor
