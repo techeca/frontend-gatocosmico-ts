@@ -7,7 +7,10 @@ export interface User {
   rut: string,
   apellido: string,
   tocken: string,
-  rol: string,
+  rol: {
+    id: number,
+    nombre:string
+  },
   clinica: {
     nombreFantasia: string,
     razonSocial: string,

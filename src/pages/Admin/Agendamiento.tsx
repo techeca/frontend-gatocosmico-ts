@@ -1,4 +1,4 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
 import {
     Dialog,
@@ -10,26 +10,17 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
-import { CopyIcon, ChevronRightIcon, ChevronLeftIcon, Cross1Icon, CheckIcon } from "@radix-ui/react-icons"
-import { useState } from "react"
+import { ChevronRightIcon, ChevronLeftIcon, Cross1Icon, CheckIcon } from "@radix-ui/react-icons"
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { toast } from "sonner"
 import { z } from "zod"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
-import {
-    Form,
-    FormControl,
-    FormDescription,
-    FormField,
-    FormItem,
-    FormLabel,
-    FormMessage,
-} from "@/components/ui/form"
+import { Form, FormControl, FormField, FormItem, FormMessage,} from "@/components/ui/form"
 import { motion } from 'framer-motion';
+import { useState } from "react"
+import { Label } from "@/components/ui/label"
 
 interface CalendarConfig {
     startHour: string;
@@ -55,10 +46,6 @@ export default function Agendamiento() {
     const [dayOfWeek, setDayOfWeek] = useState({ lunes: false, martes: false, miercoles: false, jueves: false, viernes: false, sabado: false, domingo: false });
 
     function selectDayOfWeek(day: Day) {
-        console.log(day);
-        console.log(dayOfWeek.lunes);
-
-
         setDayOfWeek(prevState => ({ ...prevState, [day]: !prevState[day] }));
     }
 

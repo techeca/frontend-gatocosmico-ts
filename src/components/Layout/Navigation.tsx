@@ -155,7 +155,7 @@ import { useUserState } from "@/hooks/useUserState";
                       </NavigationMenuLink>
                     </li>
                     {routes[0].urls.map((component, index) => (
-                      <ListItem key={component.title} to="/docs" title={component.title}>
+                      <ListItem key={index} to="/docs" title={component.title}>
                         Re-usable components built using Radix UI and Tailwind CSS.
                       </ListItem>  
                     ))}

@@ -3,19 +3,27 @@ import type { Session } from 'express-session';
 import 'dotenv/config';
 
 interface Usuario {
-        correo: string,
-        nombre: string,
-        rut: string,
-        apellido: string,
-        tocken: string,
-        rol: string,
-        clinica: string,
-        urls: { name: string; urls: { title: string; url: string; }[]; }[]
+    id: number,
+    correo: string,
+    nombre: string,
+    rut: string,
+    apellido: string,
+    tocken: string,
+    rol: string,
+    clinica: string,
+    urls: { name: string; urls: { title: string; url: string; }[]; }[]
+}
+
+interface Clinica {
+    id: string;
+    rut: string;
+    nombre: string;
 }
 
 export interface MySession extends Session {
     usuario?: Usuario;
-  }
+    clinica?: Clinica;
+}
 
 interface RequestBody {
     correo: string;
@@ -27,61 +35,64 @@ export interface LoginRequest {
     body: RequestBody;
 }
 
-const authentication = (req: LoginRequest & { session:MySession}, res: Response) => {
+const authentication = (req: LoginRequest & { session: MySession }, res: Response) => {
     try {
         const { correo, contrasena } = req.body
         const dataAEnviar = { correo: correo, password: contrasena }
         const API_URL = process.env.API_LOCAL
-        console.log(API_URL);
-        
+
         req.session = req.session as Session;
 
         fetch(`${API_URL}/auth/iniciarSession`, {
             method: 'POST',
             headers: {
-              'Content-Type': 'application/json',
+                'Content-Type': 'application/json',
             },
             body: JSON.stringify(dataAEnviar),
         })
-        .then(externalResponse => {
-            if (externalResponse.ok) {
-                return externalResponse.json();
-            } else {
-                throw new Error('Response not OK');
-            }
-        })
-        .then(responseData => {
-            if (!req.session.usuario) {
-                req.session.usuario = {
-                    correo: '',
-                    nombre: '',
-                    rut: '',
-                    apellido: '',
-                    tocken: '',
-                    rol: '',
-                    clinica: '',
-                    urls: []
+            .then(externalResponse => {
+                if (externalResponse.ok) {
+                    return externalResponse.json();
+                } else {
+                    throw new Error('Response not OK');
                 }
-            }
-            req.session.usuario.correo = responseData.correo
-            req.session.usuario.nombre = responseData.nombre
-            req.session.usuario.rut = responseData.rut
-            req.session.usuario.apellido = responseData.apellido
-            req.session.usuario.tocken = responseData.tocken
-            req.session.usuario.rol = responseData.rol
-            req.session.usuario.clinica = responseData.clinica
-            req.session.usuario.urls = getUrls(responseData.rol)
-            
-            res.status(200).json({usuario:{...req.session.usuario}});
-        })
-        .catch(error => {
-            //const errorData = await externalResponse.text();
-            
-            //res.status(error.status).json({ error: error.message, redirect: '/login'});
-            //next(error); // Pasa el error a la siguiente middleware
-            console.log(error);
-            res.status(500).json(error)
-        });
+            })
+            .then(responseData => {
+                if (!req.session.usuario) {
+                    req.session.usuario = {
+                        id: 0,
+                        correo: '',
+                        nombre: '',
+                        rut: '',
+                        apellido: '',
+                        tocken: '',
+                        rol: '',
+                        clinica: '',
+                        urls: []
+                    }
+                }
+                //console.log(responseData);
+                
+                req.session.usuario.id = responseData.id
+                req.session.usuario.correo = responseData.correo
+                req.session.usuario.nombre = responseData.nombre
+                req.session.usuario.rut = responseData.rut
+                req.session.usuario.apellido = responseData.apellido
+                req.session.usuario.tocken = responseData.tocken
+                req.session.usuario.rol = responseData.rol
+                req.session.usuario.clinica = responseData.clinica
+                req.session.usuario.urls = getUrls(responseData.rol)
+
+                res.status(200).json({ usuario: { ...req.session.usuario } });
+            })
+            .catch(error => {
+                //const errorData = await externalResponse.text();
+
+                //res.status(error.status).json({ error: error.message, redirect: '/login'});
+                //next(error); // Pasa el error a la siguiente middleware
+                console.log(error);
+                res.status(500).json(error)
+            });
 
     } catch (error) {
         //console.error('Error al hacer authentication: ', error.message);
@@ -90,7 +101,7 @@ const authentication = (req: LoginRequest & { session:MySession}, res: Response)
     }
 }
 
-function getUrls(rol: string){
+function getUrls(rol: string) {
     const urls = [
         {
             name: 'Servicios',
@@ -110,7 +121,7 @@ function getUrls(rol: string){
             ]
         },
     ]
-    
+
     const urlsAdmin = [
         {
             name: 'Servicios',

@@ -6,8 +6,9 @@ export async function allUsuarios(req: Request & { session:MySession}, res:Respo
         if (!req.session.usuario) {
             return res.status(400).send('No se ha podido obtener session');
         }
+        const API_URL = process.env.API_LOCAL
         const rutClinica = req.session.usuario.clinica.rut;
-        const response = await fetch(`http://localhost:3000/configuracion/getUsuariosClinica/${rutClinica}`, {method: 'GET'})
+        const response = await fetch(`${API_URL}/configuracion/getUsuariosClinica/${rutClinica}`, {method: 'GET'})
         
         if (response.status === 200) {
             const data = await response.json();

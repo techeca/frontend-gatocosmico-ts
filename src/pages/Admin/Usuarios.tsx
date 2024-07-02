@@ -2,22 +2,12 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { useEffect, useState } from "react"
-import {
-    Pagination,
-    PaginationContent,
-    //PaginationEllipsis,
-    PaginationItem,
-    PaginationLink,
-    PaginationNext,
-    PaginationPrevious,
-} from "@/components/ui/pagination"
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
     Form,
     FormControl,
-    FormDescription,
     FormField,
     FormItem,
     FormLabel,
@@ -36,7 +26,7 @@ import {
 import { motion } from 'framer-motion';
 import { toast } from "sonner";
 import { Switch } from "@/components/ui/switch";
-import { ContextMenu, ContextMenuCheckboxItem, ContextMenuContent, ContextMenuItem, ContextMenuLabel, ContextMenuRadioGroup, ContextMenuRadioItem, ContextMenuSeparator, ContextMenuShortcut, ContextMenuSub, ContextMenuSubContent, ContextMenuSubTrigger, ContextMenuTrigger } from "@/components/ui/context-menu";
+import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuShortcut, ContextMenuTrigger } from "@/components/ui/context-menu";
 
 interface User {
     id?: string;
@@ -77,7 +67,7 @@ export default function Usuarios() {
     const [users, setUsers] = useState<User[]>([]);
     const [selectedUser, setSelectedUser] = useState<User>({ nombre: '', apellido: '', correo: '', rut: '', rol: { id: '', nombre: '' } });
     const [isNewUser, setIsNewUser] = useState(true);
-    const [repassword, setRepassword] = useState('');
+    //const [repassword, setRepassword] = useState('');
 
     const cardVariants = {
         hidden: { opacity: 0, y: -10 },
@@ -247,7 +237,7 @@ export default function Usuarios() {
     }, [])
 
     return (
-        users &&
+        users.length > 0 &&
         <div className="flex gap-6 w-full p-6">
             <motion.div
                 className="w-full"
