@@ -2,7 +2,6 @@ import { motion } from 'framer-motion';
 import UserData from './UserData'
 import ChangePassword from "./ChangePass"
 import UserAcc from "./UserAcc"
-import { useUserState } from "@/hooks/useUserState";
 
 //próximos a retirar
 import { Button } from "@/components/ui/button"
