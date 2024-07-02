@@ -80,8 +80,9 @@ export default function Agendamiento() {
     }
 
     function saveDayOfWeek() {
-        let newCal = calendarConfig;
-        let days = [];
+        let newCal = { ...calendarConfig };
+        let days: string[] = []; 
+        
         for (const [day, value] of Object.entries(dayOfWeek)) {
             if (value) {
                 days.push(day);
