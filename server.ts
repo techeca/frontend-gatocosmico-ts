@@ -1,26 +1,19 @@
-import { renderSSR } from './src/service/utils/ssr.ts';
+import 'dotenv/config';
 import path from 'node:path';
 import process from 'node:process';
 import { fileURLToPath } from 'node:url';
 import express from 'express';
-//import type { Request, Response } from 'express';
-//import { createServer as createViteServer } from 'vite';
-import 'dotenv/config';
-//import session from 'express-session';
-//import { create } from 'node:domain';
-import viteConfig from './src/service/config/viteConfig.ts'
-import sessionMiddleware from './src/service/middlewares/session.ts';
-import authentication from './src/service/middlewares/authentication.ts';
-import { authorization } from './src/service/middlewares/authorization.ts';
-import { usuarioRouter } from './src/service/routes/usuario/index.ts';
-import { adminRouter } from './src/service/routes/admin/index.ts';
 import cookieParser from 'cookie-parser';
+import { renderSSR } from './service/utils/ssr.ts';
+import viteConfig from './service/config/viteConfig.ts'
+import sessionMiddleware from './service/middlewares/session.ts';
+import authentication from './service/middlewares/authentication.ts';
+import { authorization } from './service/middlewares/authorization.ts';
+import { usuarioRouter } from './service/routes/usuario/index.ts';
+import { adminRouter } from './service/routes/admin/index.ts';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const PORT = process.env.PORT || 5180;
-//const TOKEN_SESSION = process.env.TOKEN_SESSION;
-console.log(PORT);
-
 
 async function createServer() {
   //Configuración de express y middlewares
@@ -38,7 +31,6 @@ async function createServer() {
   app.post('/login', authentication)
   app.post('/profile', (req, res) => {
     //logout
-    //req.session.id === req.sessionID;
     req.session.destroy((err) => {
       if (err) {
         return res.status(500).send('Hubo un error al cerrar la sesión');

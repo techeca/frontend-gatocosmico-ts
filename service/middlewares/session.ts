@@ -1,4 +1,4 @@
-import sessionConfig from '../config/sessionConfig.js';
+import sessionConfig from '../../service/config/sessionConfig.js';
 import type { Request, Response, NextFunction } from 'express';
 import { MySession } from '../models/session.js';
 
