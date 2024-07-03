@@ -38,14 +38,14 @@ export async function updateUserInfo(req: Request & { session: MySession }, res:
                 body: JSON.stringify(dataAEnviar)
             })
 
-            if (response.ok) {
-                const data = await response.json();
-                console.log(data);
-                
+        if (response.ok) {
+            const data = await response.json();
+            console.log(data);
+
             res.status(200).json(data);
         } else {
             //console.log(response.json());
-            
+
             res.status(response.status).json({ error: response.statusText });
         }
 

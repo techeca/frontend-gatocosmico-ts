@@ -35,7 +35,7 @@ export interface LoginRequest {
     body: RequestBody;
 }
 
-const authentication = (req: LoginRequest & { session: MySession }, res: Response) => {
+export default async function authentication(req: LoginRequest & { session: MySession }, res: Response) {
     try {
         const { correo, contrasena } = req.body
         const dataAEnviar = { correo: correo, password: contrasena }
@@ -43,57 +43,45 @@ const authentication = (req: LoginRequest & { session: MySession }, res: Respons
 
         req.session = req.session as Session;
 
-        fetch(`${API_URL}/auth/iniciarSession`, {
+        const response = await fetch(`${API_URL}/auth/iniciarSession`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(dataAEnviar),
         })
-            .then(externalResponse => {
-                if (externalResponse.ok) {
-                    return externalResponse.json();
-                } else {
-                    throw new Error('Response not OK');
-                }
-            })
-            .then(responseData => {
-                if (!req.session.usuario) {
-                    req.session.usuario = {
-                        id: 0,
-                        correo: '',
-                        nombre: '',
-                        rut: '',
-                        apellido: '',
-                        tocken: '',
-                        rol: '',
-                        clinica: '',
-                        urls: []
-                    }
-                }
-                //console.log(responseData);
-                
-                req.session.usuario.id = responseData.id
-                req.session.usuario.correo = responseData.correo
-                req.session.usuario.nombre = responseData.nombre
-                req.session.usuario.rut = responseData.rut
-                req.session.usuario.apellido = responseData.apellido
-                req.session.usuario.tocken = responseData.tocken
-                req.session.usuario.rol = responseData.rol
-                req.session.usuario.clinica = responseData.clinica
-                req.session.usuario.urls = getUrls(responseData.rol)
 
-                res.status(200).json({ usuario: { ...req.session.usuario } });
-            })
-            .catch(error => {
-                //const errorData = await externalResponse.text();
+        if (response.ok) {
+            const data = await response.json();
 
-                //res.status(error.status).json({ error: error.message, redirect: '/login'});
-                //next(error); // Pasa el error a la siguiente middleware
-                console.log(error);
-                res.status(500).json(error)
-            });
+            req.session.usuario = {
+                id: 0,
+                correo: '',
+                nombre: '',
+                rut: '',
+                apellido: '',
+                tocken: '',
+                rol: '',
+                clinica: '',
+                urls: []
+            }
 
+            req.session.usuario.id = data.id
+            req.session.usuario.correo = data.correo
+            req.session.usuario.nombre = data.nombre
+            req.session.usuario.rut = data.rut
+            req.session.usuario.apellido = data.apellido
+            req.session.usuario.tocken = data.tocken
+            req.session.usuario.rol = data.rol
+            req.session.usuario.clinica = data.clinica
+            req.session.usuario.urls = getUrls(data.rol)
+
+            res.status(200).json({ usuario: { ...req.session.usuario } });
+        }else {
+            //console.log(response.json());
+            res.status(response.status).json({ error: response.statusText });
+        }
+        
     } catch (error) {
         //console.error('Error al hacer authentication: ', error.message);
         res.status(500).json({ error: 'Error al hacer authentication' });
@@ -165,5 +153,3 @@ function getUrls(rol: string) {
 
     return rol === 'Administrador' ? urlsAdmin : urls
 }
-
-export default authentication;
