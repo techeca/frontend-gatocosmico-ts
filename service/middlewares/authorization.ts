@@ -2,10 +2,11 @@ import type { Response, Request, NextFunction } from 'express';
 import { MySession } from '../models/session';
 
 export function authorization(req: Request & { session:MySession}, res: Response, next: NextFunction) {
-    // Si la ruta es /home, permite el acceso
-    /*if (req.path === '/home') {
+    
+  // Si la ruta es /health, permite el acceso
+    if (req.path === '/health') {
         return next();
-    }*/
+    }
     // Verifica si hay una sesión de usuario
     if (req.session && req.session.usuario) {
         //console.log(req.session.usuario);

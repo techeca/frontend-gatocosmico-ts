@@ -44,6 +44,10 @@ async function createServer() {
   app.use('/usuario', usuarioRouter);
   app.use('/admin', adminRouter)
 
+  app.get('/health', (_, res: express.Response) => {
+    res.status(200).send('OK');
+  })
+
   app.use('*', async (req, res, next) => renderSSR(req, res, next, vite, __dirname));
 
   const server = app.listen(PORT, () => {
