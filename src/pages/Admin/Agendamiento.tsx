@@ -10,7 +10,7 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog"
-import { Button } from "@/components/ui/button"
+import Button from "@/components/ui/button"
 import { ChevronRightIcon, ChevronLeftIcon, Cross1Icon, CheckIcon } from "@radix-ui/react-icons"
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { toast } from "sonner"
@@ -80,8 +80,8 @@ export default function Agendamiento() {
     }
 
     function saveDayOfWeek() {
-        let newCal = { ...calendarConfig };
-        let days: string[] = []; 
+        const newCal = { ...calendarConfig };
+        const days: string[] = []; 
         
         for (const [day, value] of Object.entries(dayOfWeek)) {
             if (value) {
@@ -101,7 +101,7 @@ export default function Agendamiento() {
     }
 
     async function saveHorario(values: z.infer<typeof formHorarioSchema>) {
-        let newCal = calendarConfig;
+        const newCal = calendarConfig;
 
         newCal.startHour = `${values.startHour}:${values.startMin}`;
         newCal.endHour = `${values.endHour}:${values.endMin}`;
@@ -116,7 +116,7 @@ export default function Agendamiento() {
     }
 
     async function saveDescanso(values: z.infer<typeof formHorarioSchema>) {
-        let newCal = calendarConfig;
+        const newCal = calendarConfig;
         newCal.startBreak = `${values.startHour}:${values.startMin}`;
         newCal.endBreak = `${values.endHour}:${values.endMin}`;
         setCalendarConfig(newCal);
@@ -150,13 +150,13 @@ export default function Agendamiento() {
     });
 
     const incrementMonth = () => {
-        let newDate = new Date(actualdate);
+        const newDate = new Date(actualdate);
         newDate.setMonth(newDate.getMonth() + 1);
         setActualdate(newDate);
     }
 
     const decrementMonth = () => {
-        let newDate = new Date(actualdate);
+        const newDate = new Date(actualdate);
         newDate.setMonth(newDate.getMonth() - 1);
         setActualdate(newDate);
     }

@@ -4,7 +4,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { z } from "zod";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button"
+import Button from "@/components/ui/button"
 import { toast } from "sonner";
 import { generateDate } from "@/lib/utils"
 import { Label } from "@/components/ui/label";

@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/card"
 import { UserContext } from "@/contexts/UserContext";
 import { useContext } from "react";
-import { Button } from "@/components/ui/button";
+import Button from "@/components/ui/button";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";

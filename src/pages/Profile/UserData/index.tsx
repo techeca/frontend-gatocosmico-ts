@@ -4,7 +4,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { z } from "zod";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button"
+import Button from "@/components/ui/button"
 import { toast } from "sonner";
 import { generateDate } from "@/lib/utils"
 import { useUserState } from "@/hooks/useUserState";
@@ -70,7 +70,7 @@ export default function UserData() {
                 },
             })
         }
-    };
+    }
 
     function resetFormProfile(e: React.MouseEvent) {
         e.preventDefault()
@@ -79,7 +79,7 @@ export default function UserData() {
             apellido: user.profile.apellido || "",
             rut: user.profile.rut || "",
         });
-    };
+    }
 
     return (
         <Card className="relative backdrop-blur-sm bg-transparent">

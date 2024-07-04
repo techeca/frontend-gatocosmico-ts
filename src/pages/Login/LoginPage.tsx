@@ -2,7 +2,7 @@ import { useContext, useEffect, useMemo, useState } from "react";
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
-import { Button } from "@/components/ui/button"
+import Button from "@/components/ui/button"
 import {
   Form,
   FormControl,
@@ -19,7 +19,7 @@ import { type ISourceOptions } from "@tsparticles/engine";
 import { loadSlim } from "@tsparticles/slim";
 import { UserContext } from "@/contexts/UserContext";
 import { useNavigate } from "react-router-dom";
-import { useTheme } from "@/components/theme-provider";
+import { useTheme } from "@/hooks/useTheme";
 import { toast } from "sonner"
 import { generateDate } from "@/lib/utils";
 
