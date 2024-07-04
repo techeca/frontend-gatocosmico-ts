@@ -6,32 +6,35 @@ on:
       - 'feature/*'
 
 jobs:
-  install-dependencies:
-    name: Run Tests & Lint
+  linter:
+    name: Linter
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Install dependencies
-        run: npm install
-  
-  lint:
-    name: Lint
-    runs-on: ubuntu-latest
-    needs: [install-dependencies]
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-      - name: Run Linter
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          cache: "npm"
+          node-version: 18
+      - name: Depedencias
+        run: npm ci
+      - name: Lint
         run: npm run lint
-
-  tests:
+  
+  unit-test:
     name: Test
+    needs: [linter]
     runs-on: ubuntu-latest
-    needs: [install-dependencies]
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-      - name: Run Tests
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          cache: "npm"
+          node-version: 18
+      - name: Depedencias
+        run: npm ci
+      - name: Test
         run: npm run test
