@@ -102,7 +102,7 @@ export default function UserAcc() {
                             </div>
                             <div className="flex flex-col space-y-1.5">
                                 <Label htmlFor="rol">Rol</Label>
-                                <Input id="rol" value={user.account.rol?.nombre} className="bg-zinc-50 dark:bg-zinc-950" readOnly />
+                                <Input id="rol" placeholder="rol" value={user.account.rol?.nombre} className="bg-zinc-50 dark:bg-zinc-950" readOnly />
                             </div>
                         </div>
 

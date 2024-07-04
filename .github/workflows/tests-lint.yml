@@ -6,16 +6,26 @@ on:
       - 'feature/*'
 
 jobs:
-  test:
+  install-dependencies:
     name: Run Tests & Lint
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
 
       - name: Install dependencies
         run: npm install
-
-      - name: Run linting
+  
+  lint:
+    runs-on: ubuntu-latest
+    needs: [install-dependencies]
+    steps:
+      - name: Run Linter
         run: npm run lint
+
+  tests:
+    runs-on: ubuntu-latest
+    needs: [install-dependencies]
+    steps:
+      - name: Run Tests
+        run: npm run test
