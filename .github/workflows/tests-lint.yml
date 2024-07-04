@@ -1,0 +1,21 @@
+name: Tests & Lint CI
+
+on:
+  push:
+    branches:
+      - 'feature/*'
+
+jobs:
+  test:
+    name: Run Tests & Lint
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run linting
+        run: npm run lint
