@@ -1,30 +1,81 @@
-# React + TypeScript + Vite
+# Frontend Gatocosmico TS
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Este es el frontend del proyecto **Gatocosmico**, desarrollado en TypeScript utilizando diversas tecnologías modernas.
 
-Currently, two official plugins are available:
+## Tabla de Contenidos
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- [Variables de Entorno](#variables-de-entorno)
+- [Instalación](#instalación)
+- [Ejecución del Proyecto](#ejecución-del-proyecto)
+- [Scripts Disponibles](#scripts-disponibles)
+- [Estructura del Proyecto](#estructura-del-proyecto)
 
-## Expanding the ESLint configuration
+## Variables de Entorno
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+Asegúrate de configurar las siguientes variables de entorno en un archivo .env en la raíz del proyecto:
 
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
+```
+TOKEN_SESSION=''
+API_URL='Para conectar con API REMOTA'
+API_LOCAL='Para conectar con API LOCAL'
+PORT=5173
 ```
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+## Instalación
+
+Para instalar las dependencias del proyecto, ejecuta el siguiente comando:
+
+```bash
+npm install
+```
+
+## Ejecución del Proyecto
+
+Para iniciar el servidor de desarrollo, utiliza:
+
+```
+npm run dev
+```
+
+El proyecto estará disponible en http://localhost:5173.
+
+## Scripts Disponibles
+En el directorio del proyecto, puedes ejecutar:
+
+`npm run dev`
+Inicia el servidor de desarrollo.
+
+`npm run build`
+Construye la aplicación para producción en la carpeta `dist`.
+
+`npm test`
+Ejecuta las pruebas.
+
+`npm run lint`
+Ejecuta el linter para analizar el código y encontrar errores o inconsistencias.
+
+## Estructura del Proyecto
+Una breve descripción de la estructura de carpetas y archivos más importantes del proyecto:
+
+```
+frontend-gatocosmico-ts/
+├── public/             # Archivos estáticos
+│   service/            # Middlewares y control de requests
+├── src/                # Código fuente del proyecto
+│   ├── components/     # Componentes reutilizables
+│   ├── context/        # React contexts
+│   ├── hooks/          # React hooks
+│   ├── pages/          # Páginas principales de la aplicación
+│   ├── utils/          # Utilidades y funciones auxiliares
+│   ├── App.tsx         # Componente principal de la aplicación
+│   ├── entry-client.tsx# Main del lado del cliente
+│   ├── entry-server.tsx# Main del lado del servidor
+│   ├── index.tsx       # Punto de entrada de la aplicación
+├── test/               # Pruebas
+├── request.ts          # Funciones de solicitud servidor-cliente
+├── server-prod.js      # Servidor para producción
+├── server.ts           # Servidor para desarrollo
+├── tsconfig.build.json # Configuración para service
+├── tsconfig.json       # Configuración para web 
+├── vite.config.ts      # Configuración de vite y vitest
+```
