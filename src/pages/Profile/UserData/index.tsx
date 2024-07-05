@@ -49,7 +49,6 @@ export default function UserData() {
 
             if (response.ok) {
                 const data = await response.json()
-                console.log(data);
                 user.update.profile(data);
 
                 toast(`Perfil Actualizado`, {

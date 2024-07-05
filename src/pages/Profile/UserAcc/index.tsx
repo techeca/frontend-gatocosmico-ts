@@ -41,8 +41,6 @@ export default function UserAcc() {
             });
 
             if (response.ok) {
-                //const body = await response.json();
-                //console.log(body);
                 toast(`Email Actualizado`, {
                     description: generateDate(),
                     action: {

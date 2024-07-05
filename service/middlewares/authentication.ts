@@ -9,7 +9,11 @@ interface Usuario {
     rut: string,
     apellido: string,
     tocken: string,
-    rol: string,
+    rol: {
+        id: number,
+        nombre: string,
+        descripcion: string
+    },
     clinica: string,
     urls: { name: string; urls: { title: string; url: string; }[]; }[]
 }
@@ -53,7 +57,7 @@ export default async function authentication(req: LoginRequest & { session: MySe
 
         if (response.ok) {
             const data = await response.json();
-
+            
             req.session.usuario = {
                 id: 0,
                 correo: '',
@@ -61,7 +65,11 @@ export default async function authentication(req: LoginRequest & { session: MySe
                 rut: '',
                 apellido: '',
                 tocken: '',
-                rol: '',
+                rol: {
+                    id: 0,
+                    nombre: '',
+                    descripcion: ''
+                },
                 clinica: '',
                 urls: []
             }
@@ -74,7 +82,7 @@ export default async function authentication(req: LoginRequest & { session: MySe
             req.session.usuario.tocken = data.tocken
             req.session.usuario.rol = data.rol
             req.session.usuario.clinica = data.clinica
-            req.session.usuario.urls = getUrls(data.rol)
+            req.session.usuario.urls = getUrls(data.rol.nombre)
 
             res.status(200).json({ usuario: { ...req.session.usuario } });
         }else {
